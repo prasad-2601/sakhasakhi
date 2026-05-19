@@ -1,124 +1,74 @@
-// GLOBAL VARIABLES
+// GLOBALS
 let userName = "";
 let userInitial = "";
 
-// ─────────────────────────────
 // START CHAT
-// ─────────────────────────────
-
 function startChat() {
 
-  try {
+  console.log("startChat running");
 
-    const input =
-      document.getElementById(
-        "user-name-input"
-      );
-
-    if (!input) {
-
-      alert("Input not found");
-      return;
-    }
-
-    const name =
-      input.value.trim();
-
-    if (name === "") {
-
-      alert(
-        "Please enter your name 💜"
-      );
-
-      return;
-    }
-
-    // SAVE USER
-    userName =
-      name.charAt(0).toUpperCase() +
-      name.slice(1);
-
-    userInitial =
-      userName.charAt(0);
-
-    // GET SCREENS
-    const onboarding =
-      document.getElementById(
-        "screen-onboarding"
-      );
-
-    const chat =
-      document.getElementById(
-        "screen-chat"
-      );
-
-    if (!onboarding || !chat) {
-
-      alert("Screen elements missing");
-      return;
-    }
-
-    // SHOW CHAT
-    chat.style.display = "flex";
-
-    // HIDE ONBOARDING
-    onboarding.style.display = "none";
-
-    // FORCE FLEX
-    chat.style.flexDirection = "column";
-
-    chat.style.justifyContent =
-      "space-between";
-
-    // WELCOME MESSAGE
-    appendBotMessage(
-      `Hey ${userName}! 💜 I'm Sakha-Sakhi. How are you feeling today?`,
-      "😊",
-      "Calm"
+  const input =
+    document.getElementById(
+      "user-name-input"
     );
 
-    // UPDATE BADGE
-    if (typeof updateMoodBadge === "function") {
+  if (!input) {
 
-      updateMoodBadge(
-        "😊",
-        "Calm"
-      );
-    }
-
-    // INPUT FOCUS
-    const msgInput =
-      document.getElementById(
-        "msg-input"
-      );
-
-    if (msgInput) {
-
-      setTimeout(() => {
-
-        msgInput.focus();
-
-      }, 200);
-    }
-
-  } catch (error) {
-
-    console.log(error);
-
-    alert(
-      "JS Error: " + error.message
-    );
+    alert("Input not found");
+    return;
   }
+
+  const name =
+    input.value.trim();
+
+  if (name === "") {
+
+    alert("Enter your name 💜");
+    return;
+  }
+
+  userName =
+    name;
+
+  userInitial =
+    name.charAt(0).toUpperCase();
+
+  // SCREENS
+  const onboarding =
+    document.getElementById(
+      "screen-onboarding"
+    );
+
+  const chat =
+    document.getElementById(
+      "screen-chat"
+    );
+
+  // SWITCH SCREEN
+  onboarding.style.display =
+    "none";
+
+  chat.style.display =
+    "flex";
+
+  // WELCOME MESSAGE
+  appendBotMessage(
+    `Hey ${userName}! 💜 I'm Sakha-Sakhi.`,
+    "😊",
+    "Calm"
+  );
+
+  updateMoodBadge(
+    "😊",
+    "Calm"
+  );
 }
 
-// ─────────────────────────────
-// APPEND BOT MESSAGE
-// ─────────────────────────────
-
+// BOT MESSAGE
 function appendBotMessage(
   text,
-  moodEmoji,
-  moodLabel
+  emoji,
+  mood
 ) {
 
   const chatWindow =
@@ -128,60 +78,26 @@ function appendBotMessage(
 
   if (!chatWindow) return;
 
-  const row =
+  const div =
     document.createElement("div");
 
-  row.className =
-    "msg-row bot-row";
+  div.className =
+    "bot-message";
 
-  row.innerHTML = `
+  div.innerHTML = `
 
-    <div class="msg-avatar">
-      🌸
+    <div class="msg-bubble bot-bubble">
+      ${text}
     </div>
 
-    <div class="msg-bubble-wrap">
-
-      <div class="msg-bubble bot-bubble">
-
-        ${text}
-
-      </div>
-
-      <div
-        style="
-          display:flex;
-          gap:8px;
-          align-items:center;
-          margin-top:4px;
-        "
-      >
-
-        <span class="msg-time">
-          ${getTime()}
-        </span>
-
-        <span class="msg-emotion-tag">
-
-          ${moodEmoji}
-          ${moodLabel}
-
-        </span>
-
-      </div>
-
-    </div>
   `;
 
-  chatWindow.appendChild(row);
+  chatWindow.appendChild(div);
 
   scrollToBottom();
 }
 
-// ─────────────────────────────
-// APPEND USER MESSAGE
-// ─────────────────────────────
-
+// USER MESSAGE
 function appendUserMessage(text) {
 
   const chatWindow =
@@ -189,48 +105,79 @@ function appendUserMessage(text) {
       "chat-window"
     );
 
-  if (!chatWindow) return;
-
-  const row =
+  const div =
     document.createElement("div");
 
-  row.className =
-    "msg-row user-row";
+  div.className =
+    "user-message";
 
-  row.innerHTML = `
+  div.innerHTML = `
 
-    <div class="msg-avatar user-avatar">
-
-      ${userInitial}
-
+    <div class="msg-bubble user-bubble">
+      ${text}
     </div>
 
-    <div class="msg-bubble-wrap">
-
-      <div class="msg-bubble user-bubble">
-
-        ${text}
-
-      </div>
-
-      <span class="msg-time">
-
-        ${getTime()}
-
-      </span>
-
-    </div>
   `;
 
-  chatWindow.appendChild(row);
+  chatWindow.appendChild(div);
 
   scrollToBottom();
 }
 
-// ─────────────────────────────
-// SCROLL
-// ─────────────────────────────
+// SEND MESSAGE
+function sendMessage() {
 
+  const input =
+    document.getElementById(
+      "msg-input"
+    );
+
+  const text =
+    input.value.trim();
+
+  if (text === "") return;
+
+  appendUserMessage(text);
+
+  input.value = "";
+
+  setTimeout(() => {
+
+    appendBotMessage(
+      "I'm listening 💜",
+      "😊",
+      "Calm"
+    );
+
+  }, 600);
+}
+
+// MOOD BADGE
+function updateMoodBadge(
+  emoji,
+  mood
+) {
+
+  const moodEmoji =
+    document.getElementById(
+      "mood-emoji"
+    );
+
+  const moodLabel =
+    document.getElementById(
+      "mood-label"
+    );
+
+  if (moodEmoji)
+    moodEmoji.innerText =
+      emoji;
+
+  if (moodLabel)
+    moodLabel.innerText =
+      mood;
+}
+
+// SCROLL
 function scrollToBottom() {
 
   const chatWindow =
@@ -245,15 +192,33 @@ function scrollToBottom() {
   }
 }
 
-// ─────────────────────────────
-// TIME
-// ─────────────────────────────
+// ENTER KEY
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
 
-function getTime() {
+    const input =
+      document.getElementById(
+        "msg-input"
+      );
 
-  return new Date()
-    .toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit"
-    });
-}
+    if (input) {
+
+      input.addEventListener(
+        "keydown",
+        function (e) {
+
+          if (
+            e.key === "Enter" &&
+            !e.shiftKey
+          ) {
+
+            e.preventDefault();
+
+            sendMessage();
+          }
+        }
+      );
+    }
+  }
+);
