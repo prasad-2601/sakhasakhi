@@ -1,525 +1,666 @@
-// ─────────────────────────────────────────────// STATE// ─────────────────────────────────────────────
+// ─────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────
 
-let userName = "";let userInitial = "?";let isWaiting = false;
+let userName = "";
+let userInitial = "?";
+let isWaiting = false;
 
-// ─────────────────────────────────────────────// INIT// ─────────────────────────────────────────────
+
+// ─────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────
 
 document.addEventListener("DOMContentLoaded", () => {
 
-spawnParticles();
+  spawnParticles();
 
-const nameInput =document.getElementById("user-name-input");
+  const nameInput =
+    document.getElementById("user-name-input");
 
-const msgInput =document.getElementById("msg-input");
+  const msgInput =
+    document.getElementById("msg-input");
 
-// ENTER on name inputif(nameInput){
+  // ENTER on name input
+  if(nameInput){
 
-nameInput.addEventListener("keydown", (e) => {
+    nameInput.addEventListener("keydown", (e) => {
 
-  if(e.key === "Enter"){
+      if(e.key === "Enter"){
 
-    e.preventDefault();
+        e.preventDefault();
 
-    startChat();
+        startChat();
+      }
+    });
+  }
+
+  // ENTER on message input
+  if(msgInput){
+
+    msgInput.addEventListener("keydown", (e) => {
+
+      if(e.key === "Enter" && !e.shiftKey){
+
+        e.preventDefault();
+
+        sendMessage();
+      }
+    });
+
+    msgInput.addEventListener("input", () => {
+
+      autoResize(msgInput);
+
+    });
   }
 });
 
-}
 
-// ENTER on message inputif(msgInput){
-
-msgInput.addEventListener("keydown", (e) => {
-
-  if(e.key === "Enter" && !e.shiftKey){
-
-    e.preventDefault();
-
-    sendMessage();
-  }
-});
-
-msgInput.addEventListener("input", () => {
-
-  autoResize(msgInput);
-
-});
-
-}});
-
-// ─────────────────────────────────────────────// PARTICLES// ─────────────────────────────────────────────
+// ─────────────────────────────────────────────
+// PARTICLES
+// ─────────────────────────────────────────────
 
 function spawnParticles(){
 
-const container =document.getElementById("particles");
+  const container =
+    document.getElementById("particles");
 
-if(!container) return;
+  if(!container) return;
 
-for(let i=0;i<25;i++){
+  for(let i=0;i<25;i++){
 
-const p =
-  document.createElement("div");
+    const p =
+      document.createElement("div");
 
-p.className = "particle";
+    p.className = "particle";
 
-p.style.left =
-  Math.random()*100 + "%";
+    p.style.left =
+      Math.random()*100 + "%";
 
-p.style.animationDuration =
-  (10 + Math.random()*15) + "s";
+    p.style.animationDuration =
+      (10 + Math.random()*15) + "s";
 
-p.style.animationDelay =
-  Math.random()*10 + "s";
+    p.style.animationDelay =
+      Math.random()*10 + "s";
 
-container.appendChild(p);
+    container.appendChild(p);
+  }
+}
 
-}}
 
-// ─────────────────────────────────────────────// START CHAT// ─────────────────────────────────────────────
+// ─────────────────────────────────────────────
+// START CHAT
+// ─────────────────────────────────────────────
 
 function startChat(){
 
-const input =document.getElementById("user-name-input");
+  const input =
+    document.getElementById("user-name-input");
 
-const name =input.value.trim();
+  const name =
+    input.value.trim();
 
-if(!name){
+  if(!name){
 
-alert("Please enter your name 💜");
+    alert("Please enter your name 💜");
 
-return;
+    return;
+  }
 
+  userName =
+    name.charAt(0).toUpperCase() +
+    name.slice(1);
+
+  userInitial =
+    userName.charAt(0).toUpperCase();
+
+  // FIXED REDIRECT
+  const onboarding =
+    document.getElementById("screen-onboarding");
+
+  const chat =
+    document.getElementById("screen-chat");
+
+  onboarding.classList.add("hidden");
+
+  setTimeout(() => {
+
+    onboarding.style.display = "none";
+
+    chat.style.display = "flex";
+
+    chat.classList.remove("hidden");
+
+  }, 300);
+
+  // Welcome message
+  setTimeout(() => {
+
+    appendBotMessage(
+      `Hey ${userName}! 💜 I'm Priya. I'm here to support you emotionally and listen to you always. How are you feeling today?`,
+      "😊",
+      "Calm",
+      "neutral"
+    );
+
+    updateMoodBadge(
+      "😊",
+      "Calm"
+    );
+
+  }, 400);
+
+  // Focus input
+  setTimeout(() => {
+
+    const msgInput =
+      document.getElementById("msg-input");
+
+    if(msgInput){
+
+      msgInput.focus();
+    }
+
+  }, 600);
 }
 
-userName =name.charAt(0).toUpperCase() +name.slice(1);
 
-userInitial =userName.charAt(0).toUpperCase();
-
-// FIXED REDIRECTconst onboarding =document.getElementById("screen-onboarding");
-
-const chat =document.getElementById("screen-chat");
-
-onboarding.classList.add("hidden");
-
-setTimeout(() => {
-
-onboarding.style.display = "none";
-
-chat.style.display = "flex";
-
-chat.classList.remove("hidden");
-
-}, 300);
-
-// Welcome messagesetTimeout(() => {
-
-appendBotMessage(
-  `Hey ${userName}! 💜 I'm Sakha-Sakhi. I'm here to support you emotionally and listen to you always. How are you feeling today?`,
-  "😊",
-  "Calm",
-  "neutral"
-);
-
-updateMoodBadge(
-  "😊",
-  "Calm"
-);
-
-}, 400);
-
-// Focus inputsetTimeout(() => {
-
-const msgInput =
-  document.getElementById("msg-input");
-
-if(msgInput){
-
-  msgInput.focus();
-}
-
-}, 600);}
-
-// ─────────────────────────────────────────────// SEND MESSAGE// ─────────────────────────────────────────────
+// ─────────────────────────────────────────────
+// SEND MESSAGE
+// ─────────────────────────────────────────────
 
 async function sendMessage(){
 
-if(isWaiting) return;
+  if(isWaiting) return;
 
-const input =document.getElementById("msg-input");
+  const input =
+    document.getElementById("msg-input");
 
-const message =input.value.trim();
+  const message =
+    input.value.trim();
 
-if(!message) return;
+  if(!message) return;
 
-appendUserMessage(message);
+  appendUserMessage(message);
 
-input.value = "";
+  input.value = "";
 
-autoResize(input);
+  autoResize(input);
 
-isWaiting = true;
+  isWaiting = true;
 
-document.getElementById("btn-send").disabled = true;
+  document.getElementById(
+    "btn-send"
+  ).disabled = true;
 
-updateHeaderStatus("● Typing...","#c084fc");
+  updateHeaderStatus(
+    "● Typing...",
+    "#c084fc"
+  );
 
-const typingId =showTypingIndicator();
+  const typingId =
+    showTypingIndicator();
 
-// Emotion detectionconst mood =detectEmotion(message);
+  // Emotion detection
+  const mood =
+    detectEmotion(message);
 
-// AI replyconst reply =generateReply(message, mood.emotion);
+  // AI reply
+  const reply =
+    generateReply(message, mood.emotion);
 
-setTimeout(() => {
+  setTimeout(() => {
 
-removeTypingIndicator(
-  typingId
-);
+    removeTypingIndicator(
+      typingId
+    );
 
-appendBotMessage(
-  reply,
-  mood.emoji,
-  mood.label,
-  mood.emotion
-);
+    appendBotMessage(
+      reply,
+      mood.emoji,
+      mood.label,
+      mood.emotion
+    );
 
-updateMoodBadge(
-  mood.emoji,
-  mood.label
-);
+    updateMoodBadge(
+      mood.emoji,
+      mood.label
+    );
 
-updateHeaderStatus(
-  "● Online & listening",
-  "#22c55e"
-);
+    updateHeaderStatus(
+      "● Online & listening",
+      "#22c55e"
+    );
 
-isWaiting = false;
+    isWaiting = false;
 
-document
-  .getElementById("btn-send")
-  .disabled = false;
+    document
+      .getElementById("btn-send")
+      .disabled = false;
 
-}, 1000 + Math.random()*1200);}
+  }, 1000 + Math.random()*1200);
+}
 
-// ─────────────────────────────────────────────// EMOTION DETECTION// ─────────────────────────────────────────────
+
+// ─────────────────────────────────────────────
+// EMOTION DETECTION
+// ─────────────────────────────────────────────
 
 function detectEmotion(message){
 
-const text =message.toLowerCase();
+  const text =
+    message.toLowerCase();
 
-if(text.includes("happy") ||text.includes("good") ||text.includes("great") ||text.includes("excited")){
+  if(
+    text.includes("happy") ||
+    text.includes("good") ||
+    text.includes("great") ||
+    text.includes("excited")
+  ){
 
-return {
-  emotion:"joy",
-  emoji:"😄",
-  label:"Joyful"
-};
+    return {
+      emotion:"joy",
+      emoji:"😄",
+      label:"Joyful"
+    };
+  }
 
+  if(
+    text.includes("sad") ||
+    text.includes("cry") ||
+    text.includes("hurt") ||
+    text.includes("depressed")
+  ){
+
+    return {
+      emotion:"sadness",
+      emoji:"💙",
+      label:"Feeling Low"
+    };
+  }
+
+  if(
+    text.includes("angry") ||
+    text.includes("mad") ||
+    text.includes("frustrated")
+  ){
+
+    return {
+      emotion:"anger",
+      emoji:"🔥",
+      label:"Frustrated"
+    };
+  }
+
+  if(
+    text.includes("stress") ||
+    text.includes("fear") ||
+    text.includes("anxiety")
+  ){
+
+    return {
+      emotion:"fear",
+      emoji:"💚",
+      label:"Anxious"
+    };
+  }
+
+  if(
+    text.includes("alone") ||
+    text.includes("lonely")
+  ){
+
+    return {
+      emotion:"lonely",
+      emoji:"💜",
+      label:"Lonely"
+    };
+  }
+
+  return {
+    emotion:"neutral",
+    emoji:"😊",
+    label:"Calm"
+  };
 }
 
-if(text.includes("sad") ||text.includes("cry") ||text.includes("hurt") ||text.includes("depressed")){
 
-return {
-  emotion:"sadness",
-  emoji:"💙",
-  label:"Feeling Low"
-};
-
-}
-
-if(text.includes("angry") ||text.includes("mad") ||text.includes("frustrated")){
-
-return {
-  emotion:"anger",
-  emoji:"🔥",
-  label:"Frustrated"
-};
-
-}
-
-if(text.includes("stress") ||text.includes("fear") ||text.includes("anxiety")){
-
-return {
-  emotion:"fear",
-  emoji:"💚",
-  label:"Anxious"
-};
-
-}
-
-if(text.includes("alone") ||text.includes("lonely")){
-
-return {
-  emotion:"lonely",
-  emoji:"💜",
-  label:"Lonely"
-};
-
-}
-
-return {emotion:"neutral",emoji:"😊",label:"Calm"};}
-
-// ─────────────────────────────────────────────// HUMAN-LIKE AI REPLIES// ─────────────────────────────────────────────
+// ─────────────────────────────────────────────
+// HUMAN-LIKE AI REPLIES
+// ─────────────────────────────────────────────
 
 function generateReply(message, emotion){
 
-const text =message.toLowerCase();
+  const text =
+    message.toLowerCase();
 
-const motivational = [
+  const motivational = [
 
-"🌸 One difficult day doesn't define your life.",
+    "🌸 One difficult day doesn't define your life.",
 
-"💜 You deserve kindness too.",
+    "💜 You deserve kindness too.",
 
-"🌈 Better days slowly come back.",
+    "🌈 Better days slowly come back.",
 
-"✨ Healing takes time and that's okay.",
+    "✨ Healing takes time and that's okay.",
 
-"🌙 You're stronger than you think.",
+    "🌙 You're stronger than you think.",
 
-"🔥 Tough moments create stronger people."
-
-];
-
-const responses = {
-
-joy: [
-
-  `That honestly sounds wonderful 😄`,
-
-  `I'm genuinely happy hearing that 💜`,
-
-  `You sound really excited 🌟`
-],
-
-sadness: [
-
-  `I'm really sorry you're feeling this way 💙`,
-
-  `You don't always have to pretend you're okay 🌙`,
-
-  `I'm glad you shared this instead of hiding it 💜`
-],
-
-anger: [
-
-  `That sounds really frustrating honestly 🔥`,
-
-  `Your feelings are valid 💜`,
-
-  `I understand why you're upset.`
-],
-
-fear: [
-
-  `That sounds stressful 💚`,
-
-  `Take things one step at a time 🌿`,
-
-  `You don't need all the answers today.`
-],
-
-lonely: [
-
-  `Feeling lonely hurts deeply 💜`,
-
-  `I'm here with you right now 🌸`,
-
-  `Your existence matters more than you know.`
-],
-
-neutral: [
-
-  `Tell me more 😊`,
-
-  `I'm listening carefully 💜`,
-
-  `That sounds important to you 🌸`
-]
-
-};
-
-let pool =responses[emotion] ||responses["neutral"];
-
-// Context-aware repliesif(text.includes("exam") ||text.includes("study")){
-
-pool.push(
-  `Academic pressure can become exhausting 📚`,
-  `Please don't let marks define your worth 💜`
-);
-
-}
-
-if(text.includes("breakup") ||text.includes("relationship")){
-
-pool.push(
-  `Heartbreak changes people deeply 💔`,
-  `Emotional pain takes time to heal 🌙`
-);
-
-}
-
-const response =pool[Math.floor(Math.random() *pool.length)];
-
-let finalReply =response;
-
-// Add motivation randomlyif(Math.random() > 0.4){
-
-finalReply += "\n\n" +
-
-  motivational[
-    Math.floor(
-      Math.random() *
-      motivational.length
-    )
+    "🔥 Tough moments create stronger people."
   ];
 
+  const responses = {
+
+    joy: [
+
+      `That honestly sounds wonderful 😄`,
+
+      `I'm genuinely happy hearing that 💜`,
+
+      `You sound really excited 🌟`
+    ],
+
+    sadness: [
+
+      `I'm really sorry you're feeling this way 💙`,
+
+      `You don't always have to pretend you're okay 🌙`,
+
+      `I'm glad you shared this instead of hiding it 💜`
+    ],
+
+    anger: [
+
+      `That sounds really frustrating honestly 🔥`,
+
+      `Your feelings are valid 💜`,
+
+      `I understand why you're upset.`
+    ],
+
+    fear: [
+
+      `That sounds stressful 💚`,
+
+      `Take things one step at a time 🌿`,
+
+      `You don't need all the answers today.`
+    ],
+
+    lonely: [
+
+      `Feeling lonely hurts deeply 💜`,
+
+      `I'm here with you right now 🌸`,
+
+      `Your existence matters more than you know.`
+    ],
+
+    neutral: [
+
+      `Tell me more 😊`,
+
+      `I'm listening carefully 💜`,
+
+      `That sounds important to you 🌸`
+    ]
+  };
+
+  let pool =
+    responses[emotion] ||
+    responses["neutral"];
+
+  // Context-aware replies
+  if(
+    text.includes("exam") ||
+    text.includes("study")
+  ){
+
+    pool.push(
+      `Academic pressure can become exhausting 📚`,
+      `Please don't let marks define your worth 💜`
+    );
+  }
+
+  if(
+    text.includes("breakup") ||
+    text.includes("relationship")
+  ){
+
+    pool.push(
+      `Heartbreak changes people deeply 💔`,
+      `Emotional pain takes time to heal 🌙`
+    );
+  }
+
+  const response =
+    pool[
+      Math.floor(
+        Math.random() *
+        pool.length
+      )
+    ];
+
+  let finalReply =
+    response;
+
+  // Add motivation randomly
+  if(Math.random() > 0.4){
+
+    finalReply += "\n\n" +
+
+      motivational[
+        Math.floor(
+          Math.random() *
+          motivational.length
+        )
+      ];
+  }
+
+  return finalReply;
 }
 
-return finalReply;}
 
-// ─────────────────────────────────────────────// BOT MESSAGE// ─────────────────────────────────────────────
+// ─────────────────────────────────────────────
+// BOT MESSAGE
+// ─────────────────────────────────────────────
 
-function appendBotMessage(text,moodEmoji,moodLabel,emotion){
+function appendBotMessage(
+  text,
+  moodEmoji,
+  moodLabel,
+  emotion
+){
 
-const chatWindow =document.getElementById("chat-window");
+  const chatWindow =
+    document.getElementById("chat-window");
 
-const row =document.createElement("div");
+  const row =
+    document.createElement("div");
 
-row.className ="msg-row bot-row";
+  row.className =
+    "msg-row bot-row";
 
-row.innerHTML = `
+  row.innerHTML = `
 
-<div class="msg-avatar">🌟</div>
+    <div class="msg-avatar">🌟</div>
 
-<div class="msg-bubble-wrap">
+    <div class="msg-bubble-wrap">
 
-  <div class="msg-bubble bot-bubble">
+      <div class="msg-bubble bot-bubble">
 
-    ${text.replace(/\n/g, "<br>")}
+        ${text.replace(/\n/g, "<br>")}
 
-  </div>
+      </div>
 
-  <div style="display:flex;align-items:center;gap:8px;">
+      <div style="display:flex;align-items:center;gap:8px;">
 
-    <span class="msg-time">
-      ${getTime()}
-    </span>
+        <span class="msg-time">
+          ${getTime()}
+        </span>
 
-    <span class="msg-emotion-tag">
-      ${moodEmoji} ${moodLabel}
-    </span>
+        <span class="msg-emotion-tag">
+          ${moodEmoji} ${moodLabel}
+        </span>
 
-  </div>
+      </div>
 
-</div>
+    </div>
+  `;
 
-`;
+  chatWindow.appendChild(row);
 
-chatWindow.appendChild(row);
+  scrollToBottom();
+}
 
-scrollToBottom();}
 
-// ─────────────────────────────────────────────// USER MESSAGE// ─────────────────────────────────────────────
+// ─────────────────────────────────────────────
+// USER MESSAGE
+// ─────────────────────────────────────────────
 
 function appendUserMessage(text){
 
-const chatWindow =document.getElementById("chat-window");
+  const chatWindow =
+    document.getElementById("chat-window");
 
-const row =document.createElement("div");
+  const row =
+    document.createElement("div");
 
-row.className ="msg-row user-row";
+  row.className =
+    "msg-row user-row";
 
-row.innerHTML = `
+  row.innerHTML = `
 
-<div class="msg-avatar user-avatar">
-  ${userInitial}
-</div>
+    <div class="msg-avatar user-avatar">
+      ${userInitial}
+    </div>
 
-<div class="msg-bubble-wrap">
+    <div class="msg-bubble-wrap">
 
-  <div class="msg-bubble user-bubble">
-    ${text}
-  </div>
+      <div class="msg-bubble user-bubble">
+        ${text}
+      </div>
 
-  <span class="msg-time">
-    ${getTime()}
-  </span>
+      <span class="msg-time">
+        ${getTime()}
+      </span>
 
-</div>
+    </div>
+  `;
 
-`;
+  chatWindow.appendChild(row);
 
-chatWindow.appendChild(row);
+  scrollToBottom();
+}
 
-scrollToBottom();}
 
-// ─────────────────────────────────────────────// TYPING INDICATOR// ─────────────────────────────────────────────
+// ─────────────────────────────────────────────
+// TYPING INDICATOR
+// ─────────────────────────────────────────────
 
 function showTypingIndicator(){
 
-const chatWindow =document.getElementById("chat-window");
+  const chatWindow =
+    document.getElementById("chat-window");
 
-const id ="typing-" + Date.now();
+  const id =
+    "typing-" + Date.now();
 
-const div =document.createElement("div");
+  const div =
+    document.createElement("div");
 
-div.id = id;
+  div.id = id;
 
-div.className ="typing-indicator";
+  div.className =
+    "typing-indicator";
 
-div.innerHTML = `
+  div.innerHTML = `
 
-<div class="msg-avatar">🌟</div>
+    <div class="msg-avatar">🌟</div>
 
-<div class="typing-bubble">
+    <div class="typing-bubble">
 
-  <div class="typing-dot"></div>
-  <div class="typing-dot"></div>
-  <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
 
-</div>
+    </div>
+  `;
 
-`;
+  chatWindow.appendChild(div);
 
-chatWindow.appendChild(div);
+  scrollToBottom();
 
-scrollToBottom();
-
-return id;}
+  return id;
+}
 
 function removeTypingIndicator(id){
 
-const el =document.getElementById(id);
+  const el =
+    document.getElementById(id);
 
-if(el){el.remove();}}
+  if(el){
+    el.remove();
+  }
+}
 
-// ─────────────────────────────────────────────// HELPERS// ─────────────────────────────────────────────
 
-function updateMoodBadge(emoji,label){
+// ─────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────
 
-document.getElementById("mood-emoji").textContent = emoji;
+function updateMoodBadge(
+  emoji,
+  label
+){
 
-document.getElementById("mood-label").textContent = label;}
+  document.getElementById(
+    "mood-emoji"
+  ).textContent = emoji;
 
-function updateHeaderStatus(text,color){
+  document.getElementById(
+    "mood-label"
+  ).textContent = label;
+}
 
-const status =document.getElementById("header-status");
+function updateHeaderStatus(
+  text,
+  color
+){
 
-status.textContent = text;
+  const status =
+    document.getElementById(
+      "header-status"
+    );
 
-status.style.color = color;}
+  status.textContent = text;
+
+  status.style.color = color;
+}
 
 function scrollToBottom(){
 
-const chatWindow =document.getElementById("chat-window");
+  const chatWindow =
+    document.getElementById("chat-window");
 
-chatWindow.scrollTop =chatWindow.scrollHeight;}
+  chatWindow.scrollTop =
+    chatWindow.scrollHeight;
+}
 
 function autoResize(textarea){
 
-textarea.style.height = "auto";
+  textarea.style.height = "auto";
 
-textarea.style.height =textarea.scrollHeight + "px";}
+  textarea.style.height =
+    textarea.scrollHeight + "px";
+}
 
 function getTime(){
 
-return new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});}
+  return new Date()
+    .toLocaleTimeString([], {
+      hour:"2-digit",
+      minute:"2-digit"
+    });
+}
