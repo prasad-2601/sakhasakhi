@@ -1,40 +1,267 @@
-function sendMessage() {
+// ======================================
+// GLOBAL VARIABLES
+// ======================================
+
+let userName = "";
+let userInitial = "";
+
+// ======================================
+// START CHAT
+// ======================================
+
+function startChat() {
 
   try {
 
-    // INPUT
     const input =
       document.getElementById(
-        "msg-input"
+        "user-name-input"
       );
 
     if (!input) {
 
+      alert("Input field not found");
+      return;
+    }
+
+    const name =
+      input.value.trim();
+
+    if (name === "") {
+
       alert(
-        "Message input not found"
+        "Please enter your name 💜"
       );
 
       return;
     }
 
-    // USER TEXT
+    // SAVE USER
+    userName = name;
+
+    userInitial =
+      name.charAt(0).toUpperCase();
+
+    // SCREENS
+    const onboarding =
+      document.getElementById(
+        "screen-onboarding"
+      );
+
+    const chatScreen =
+      document.getElementById(
+        "screen-chat"
+      );
+
+    if (
+      !onboarding ||
+      !chatScreen
+    ) {
+
+      alert("Screen error");
+      return;
+    }
+
+    // SWITCH SCREEN
+    onboarding.style.display =
+      "none";
+
+    chatScreen.style.display =
+      "flex";
+
+    chatScreen.style.flexDirection =
+      "column";
+
+    // WELCOME MESSAGE
+    appendBotMessage(
+      `Hey ${userName}! 💜 I'm Sakha-Sakhi. How are you feeling today?`,
+      "😊",
+      "Calm"
+    );
+
+    // MOOD
+    updateMoodBadge(
+      "😊",
+      "Calm"
+    );
+
+    // FOCUS INPUT
+    setTimeout(() => {
+
+      const msgInput =
+        document.getElementById(
+          "msg-input"
+        );
+
+      if (msgInput) {
+
+        msgInput.focus();
+      }
+
+    }, 200);
+
+  } catch (error) {
+
+    console.log(error);
+
+    alert(
+      "Start Error: " +
+      error.message
+    );
+  }
+}
+
+// ======================================
+// BOT MESSAGE
+// ======================================
+
+function appendBotMessage(
+  text,
+  moodEmoji,
+  moodLabel
+) {
+
+  const chatWindow =
+    document.getElementById(
+      "chat-window"
+    );
+
+  if (!chatWindow) return;
+
+  const row =
+    document.createElement("div");
+
+  row.className =
+    "msg-row bot-row";
+
+  row.innerHTML = `
+
+    <div class="msg-avatar">
+      🌸
+    </div>
+
+    <div class="msg-bubble-wrap">
+
+      <div class="msg-bubble bot-bubble">
+
+        ${text}
+
+      </div>
+
+      <div
+        style="
+          display:flex;
+          gap:8px;
+          margin-top:6px;
+          align-items:center;
+        "
+      >
+
+        <span class="msg-time">
+
+          ${getTime()}
+
+        </span>
+
+        <span class="msg-emotion-tag">
+
+          ${moodEmoji}
+          ${moodLabel}
+
+        </span>
+
+      </div>
+
+    </div>
+  `;
+
+  chatWindow.appendChild(row);
+
+  scrollToBottom();
+}
+
+// ======================================
+// USER MESSAGE
+// ======================================
+
+function appendUserMessage(
+  text
+) {
+
+  const chatWindow =
+    document.getElementById(
+      "chat-window"
+    );
+
+  if (!chatWindow) return;
+
+  const row =
+    document.createElement("div");
+
+  row.className =
+    "msg-row user-row";
+
+  row.innerHTML = `
+
+    <div class="msg-avatar user-avatar">
+
+      ${userInitial}
+
+    </div>
+
+    <div class="msg-bubble-wrap">
+
+      <div class="msg-bubble user-bubble">
+
+        ${text}
+
+      </div>
+
+      <span class="msg-time">
+
+        ${getTime()}
+
+      </span>
+
+    </div>
+  `;
+
+  chatWindow.appendChild(row);
+
+  scrollToBottom();
+}
+
+// ======================================
+// SEND MESSAGE
+// ======================================
+
+function sendMessage() {
+
+  try {
+
+    const input =
+      document.getElementById(
+        "msg-input"
+      );
+
+    if (!input) return;
+
     const text =
       input.value.trim();
 
-    // EMPTY CHECK
     if (text === "") return;
 
-    // SHOW USER MESSAGE
+    // USER MESSAGE
     appendUserMessage(text);
 
     // CLEAR INPUT
     input.value = "";
 
-    // LOWERCASE TEXT
+    // LOWERCASE
     const msg =
       text.toLowerCase();
 
-    // DEFAULT REPLY
+    // DEFAULT
     let reply =
       "I'm here with you 💜";
 
@@ -44,10 +271,7 @@ function sendMessage() {
     let mood =
       "Calm";
 
-    // ======================================
-    // GREETINGS
-    // ======================================
-
+    // GREETING
     if (
       msg.includes("hi") ||
       msg.includes("hello") ||
@@ -55,7 +279,7 @@ function sendMessage() {
     ) {
 
       reply =
-        `Hey ${userName}! 💜 It's really nice talking with you.`;
+        `Hey ${userName}! 💜 Nice talking with you.`;
 
       emoji =
         "👋";
@@ -64,20 +288,15 @@ function sendMessage() {
         "Friendly";
     }
 
-    // ======================================
     // HAPPY
-    // ======================================
-
     else if (
       msg.includes("happy") ||
       msg.includes("good") ||
-      msg.includes("great") ||
-      msg.includes("awesome") ||
-      msg.includes("fine")
+      msg.includes("great")
     ) {
 
       reply =
-        "That makes me happy too 🌸 Keep smiling and enjoying your day.";
+        "That makes me happy too 🌸";
 
       emoji =
         "😄";
@@ -86,19 +305,15 @@ function sendMessage() {
         "Happy";
     }
 
-    // ======================================
     // SAD
-    // ======================================
-
     else if (
       msg.includes("sad") ||
       msg.includes("cry") ||
-      msg.includes("depressed") ||
       msg.includes("upset")
     ) {
 
       reply =
-        "I'm really sorry you're feeling this way 💜 Remember you're not alone.";
+        "I'm always here for you 💜 You're not alone.";
 
       emoji =
         "🥺";
@@ -107,38 +322,15 @@ function sendMessage() {
         "Supportive";
     }
 
-    // ======================================
-    // ANGRY
-    // ======================================
-
-    else if (
-      msg.includes("angry") ||
-      msg.includes("mad") ||
-      msg.includes("frustrated")
-    ) {
-
-      reply =
-        "I understand your frustration 💜 Take a deep breath, I'm listening.";
-
-      emoji =
-        "😌";
-
-      mood =
-        "Calming";
-    }
-
-    // ======================================
     // STRESS
-    // ======================================
-
     else if (
       msg.includes("stress") ||
-      msg.includes("pressure") ||
-      msg.includes("tired")
+      msg.includes("tired") ||
+      msg.includes("pressure")
     ) {
 
       reply =
-        "You've been carrying a lot lately 🌸 Don't forget to rest too.";
+        "You've been handling a lot 🌸 Don't forget to rest.";
 
       emoji =
         "💜";
@@ -147,56 +339,15 @@ function sendMessage() {
         "Caring";
     }
 
-    // ======================================
-    // LONELY
-    // ======================================
-
-    else if (
-      msg.includes("alone") ||
-      msg.includes("lonely")
-    ) {
-
-      reply =
-        "Even when life feels lonely, I'm here beside you 💜";
-
-      emoji =
-        "🤗";
-
-      mood =
-        "Warm";
-    }
-
-    // ======================================
-    // LOVE
-    // ======================================
-
-    else if (
-      msg.includes("love")
-    ) {
-
-      reply =
-        "Love is one of the most beautiful feelings 💖";
-
-      emoji =
-        "😍";
-
-      mood =
-        "Lovely";
-    }
-
-    // ======================================
-    // EXAMS / STUDY
-    // ======================================
-
+    // EXAMS
     else if (
       msg.includes("exam") ||
       msg.includes("study") ||
-      msg.includes("college") ||
-      msg.includes("assignment")
+      msg.includes("college")
     ) {
 
       reply =
-        "You're stronger than your stress 💪 You'll do amazing.";
+        "You can do this 💪 I believe in you.";
 
       emoji =
         "📚";
@@ -205,28 +356,22 @@ function sendMessage() {
         "Motivating";
     }
 
-    // ======================================
-    // FRIENDS
-    // ======================================
-
+    // LOVE
     else if (
-      msg.includes("friend")
+      msg.includes("love")
     ) {
 
       reply =
-        "Good friends make life brighter 🌸";
+        "Love is such a beautiful emotion 💖";
 
       emoji =
-        "🤝";
+        "😍";
 
       mood =
-        "Friendly";
+        "Lovely";
     }
 
-    // ======================================
-    // THANK YOU
-    // ======================================
-
+    // THANKS
     else if (
       msg.includes("thank")
     ) {
@@ -241,32 +386,13 @@ function sendMessage() {
         "Warm";
     }
 
-    // ======================================
-    // BYE
-    // ======================================
-
-    else if (
-      msg.includes("bye") ||
-      msg.includes("goodnight")
-    ) {
-
-      reply =
-        "Take care 💜 I'm always here whenever you need me.";
-
-      emoji =
-        "🌙";
-
-      mood =
-        "Peaceful";
-    }
-
-    // UPDATE MOOD BADGE
+    // UPDATE BADGE
     updateMoodBadge(
       emoji,
       mood
     );
 
-    // BOT REPLY
+    // BOT RESPONSE
     setTimeout(() => {
 
       appendBotMessage(
@@ -287,3 +413,102 @@ function sendMessage() {
     );
   }
 }
+
+// ======================================
+// MOOD BADGE
+// ======================================
+
+function updateMoodBadge(
+  emoji,
+  label
+) {
+
+  const moodEmoji =
+    document.getElementById(
+      "mood-emoji"
+    );
+
+  const moodLabel =
+    document.getElementById(
+      "mood-label"
+    );
+
+  if (moodEmoji) {
+
+    moodEmoji.innerText =
+      emoji;
+  }
+
+  if (moodLabel) {
+
+    moodLabel.innerText =
+      label;
+  }
+}
+
+// ======================================
+// SCROLL
+// ======================================
+
+function scrollToBottom() {
+
+  const chatWindow =
+    document.getElementById(
+      "chat-window"
+    );
+
+  if (chatWindow) {
+
+    chatWindow.scrollTop =
+      chatWindow.scrollHeight;
+  }
+}
+
+// ======================================
+// TIME
+// ======================================
+
+function getTime() {
+
+  return new Date()
+    .toLocaleTimeString([], {
+
+      hour: "2-digit",
+      minute: "2-digit"
+
+    });
+}
+
+// ======================================
+// ENTER KEY SUPPORT
+// ======================================
+
+document.addEventListener(
+  "DOMContentLoaded",
+  function () {
+
+    const input =
+      document.getElementById(
+        "msg-input"
+      );
+
+    if (input) {
+
+      input.addEventListener(
+        "keydown",
+        function (e) {
+
+          if (
+            e.key === "Enter" &&
+            !e.shiftKey
+          ) {
+
+            e.preventDefault();
+
+            sendMessage();
+          }
+        }
+      );
+    }
+  }
+);
