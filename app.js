@@ -1,283 +1,109 @@
-function generateReply(message, emotion){
+function startChat(){
 
-  const text =
-    message.toLowerCase().trim();
+  try{
 
-  // ─────────────────────────
-  // GREETINGS
-  // ─────────────────────────
+    const input =
+      document.getElementById(
+        "user-name-input"
+      );
 
-  const greetings = [
+    if(!input){
 
-    "hi",
-    "hello",
-    "hey",
-    "hii",
-    "heyy",
-    "hola",
-    "good morning",
-    "good afternoon",
-    "good evening"
-  ];
+      alert("Input not found");
 
-  // STRICT GREETING CHECK
-  if(greetings.includes(text)){
+      return;
+    }
 
-    const greetingReplies = [
+    const name =
+      input.value.trim();
 
-      `Hey ${userName}! 💜 It's really nice talking to you.`,
+    if(name === ""){
 
-      `Hello ${userName} 😊 How has your day been so far?`,
+      alert(
+        "Please enter your name 💜"
+      );
 
-      `Hii 🌸 I'm glad you're here. How are you feeling today?`,
+      return;
+    }
 
-      `Heyy 💜 Tell me what's on your mind today.`,
+    // SAVE USER
+    userName =
+      name.charAt(0).toUpperCase() +
+      name.slice(1);
 
-      `Hello there ✨ I'm here for you anytime.`,
+    userInitial =
+      userName.charAt(0);
 
-      `Hey ${userName}! 😊 I hope your day is going okay.`
+    // GET SCREENS
+    const onboarding =
+      document.getElementById(
+        "screen-onboarding"
+      );
 
-    ];
+    const chat =
+      document.getElementById(
+        "screen-chat"
+      );
 
-    return greetingReplies[
-      Math.floor(
-        Math.random() *
-        greetingReplies.length
-      )
-    ];
-  }
+    // SHOW CHAT
+    chat.style.display =
+      "flex";
 
-  // ─────────────────────────
-  // MOTIVATIONAL LINES
-  // ─────────────────────────
+    // HIDE ONBOARDING
+    onboarding.style.display =
+      "none";
 
-  const motivational = [
+    // FORCE FLEX
+    chat.style.flexDirection =
+      "column";
 
-    "🌸 One difficult day doesn't define your life.",
+    chat.style.justifyContent =
+      "space-between";
 
-    "💜 You deserve kindness too.",
+    // SAFE CHAT WINDOW CHECK
+    const chatWindow =
+      document.getElementById(
+        "chat-window"
+      );
 
-    "🌈 Better days slowly come back.",
+    if(chatWindow){
 
-    "✨ Healing takes time and that's okay.",
+      appendBotMessage(
+        `Hey ${userName}! 💜 I'm Sakha-Sakhi. How are you feeling today?`,
+        "😊",
+        "Calm",
+        "neutral"
+      );
 
-    "🌙 You're stronger than you think.",
+    }
 
-    "🔥 Tough moments create stronger people.",
+    // MOOD BADGE
+    updateMoodBadge(
+      "😊",
+      "Calm"
+    );
 
-    "💙 It's okay to rest sometimes."
-  ];
+    // INPUT FOCUS
+    const msgInput =
+      document.getElementById(
+        "msg-input"
+      );
 
-  // ─────────────────────────
-  // MAIN RESPONSES
-  // ─────────────────────────
+    if(msgInput){
 
-  const responses = {
+      setTimeout(() => {
 
-    joy: [
+        msgInput.focus();
 
-      `That honestly sounds wonderful 😄`,
+      }, 200);
+    }
 
-      `I'm genuinely happy hearing that 💜`,
+  }catch(error){
 
-      `You sound really excited 🌟`,
+    console.log(error);
 
-      `That's beautiful to hear honestly ✨`
-    ],
-
-    sadness: [
-
-      `I'm really sorry you're feeling this way 💙`,
-
-      `You don't always have to pretend you're okay 🌙`,
-
-      `I'm glad you shared this instead of hiding it 💜`,
-
-      `That sounds emotionally heavy honestly.`
-    ],
-
-    anger: [
-
-      `That sounds really frustrating honestly 🔥`,
-
-      `Your feelings are valid 💜`,
-
-      `I understand why you're upset.`,
-
-      `Sometimes life feels unfair honestly.`
-    ],
-
-    fear: [
-
-      `That sounds stressful 💚`,
-
-      `Take things one step at a time 🌿`,
-
-      `You don't need all the answers today.`,
-
-      `Anxiety can make everything feel heavier.`
-    ],
-
-    lonely: [
-
-      `Feeling lonely hurts deeply 💜`,
-
-      `I'm here with you right now 🌸`,
-
-      `Your existence matters more than you know.`,
-
-      `You deserve people who understand you 💙`
-    ],
-
-    neutral: [
-
-      `Tell me more 😊`,
-
-      `I'm listening carefully 💜`,
-
-      `That sounds important to you 🌸`,
-
-      `Go on... I'm listening ✨`
-    ]
-  };
-
-  let pool =
-    responses[emotion] ||
-    responses["neutral"];
-
-  // ─────────────────────────
-  // CONTEXT-AWARE REPLIES
-  // ─────────────────────────
-
-  // Exams
-  if(
-    text.includes("exam") ||
-    text.includes("study") ||
-    text.includes("marks")
-  ){
-
-    pool.push(
-      `Academic pressure can become exhausting 📚`,
-      `Please don't let marks define your worth 💜`,
-      `You're more important than grades 🌸`
+    alert(
+      "JS Error: " + error.message
     );
   }
-
-  // Relationship
-  if(
-    text.includes("breakup") ||
-    text.includes("relationship") ||
-    text.includes("love")
-  ){
-
-    pool.push(
-      `Heartbreak changes people deeply 💔`,
-      `Emotional pain takes time to heal 🌙`,
-      `Relationships can leave emotional scars.`
-    );
-  }
-
-  // Family
-  if(text.includes("family")){
-
-    pool.push(
-      `Family pressure can become emotionally heavy 💙`,
-      `You deserve understanding too 🌸`,
-      `Sometimes family situations become overwhelming.`
-    );
-  }
-
-  // Friends
-  if(text.includes("friend")){
-
-    pool.push(
-      `Friendship problems can hurt deeply 💜`,
-      `Being misunderstood by friends feels painful.`,
-      `Real friendships should feel safe 🌸`
-    );
-  }
-
-  // Alone
-  if(text.includes("alone")){
-
-    pool.push(
-      `You don't deserve to feel alone 💜`,
-      `Loneliness can make everything feel heavier.`,
-      `I'm glad you're talking instead of staying silent 🌸`
-    );
-  }
-
-  // Tired
-  if(
-    text.includes("tired") ||
-    text.includes("exhausted")
-  ){
-
-    pool.push(
-      `You sound emotionally drained 🌙`,
-      `You've probably been carrying too much.`,
-      `Rest is important too 💜`
-    );
-  }
-
-  // ─────────────────────────
-  // RANDOM RESPONSE
-  // ─────────────────────────
-
-  const response =
-    pool[
-      Math.floor(
-        Math.random() *
-        pool.length
-      )
-    ];
-
-  let finalReply =
-    response;
-
-  // RANDOM MOTIVATION
-  if(Math.random() > 0.4){
-
-    finalReply += "\n\n" +
-
-      motivational[
-        Math.floor(
-          Math.random() *
-          motivational.length
-        )
-      ];
-  }
-
-  // ─────────────────────────
-  // FOLLOW-UP QUESTIONS
-  // ─────────────────────────
-
-  const followUps = [
-
-    "Do you want to talk more about it?",
-
-    "How has your day been?",
-
-    "I'm listening 💜",
-
-    "Tell me more honestly.",
-
-    "What happened exactly?",
-
-    "How long have you been feeling this way?"
-  ];
-
-  if(Math.random() > 0.5){
-
-    finalReply += "\n\n" +
-
-      followUps[
-        Math.floor(
-          Math.random() *
-          followUps.length
-        )
-      ];
-  }
-
-  return finalReply;
 }
