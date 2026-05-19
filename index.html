@@ -3,62 +3,59 @@
 
 <head>
 
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
 
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
-  />
+  >
 
-  <title>Sakha-Sakhi — My Companion 💜</title>
+  <title>Sakha-Sakhi 💜</title>
 
-  <!-- Fonts -->
+  <!-- GOOGLE FONTS -->
   <link
     rel="preconnect"
     href="https://fonts.googleapis.com"
-  />
+  >
 
   <link
     rel="preconnect"
     href="https://fonts.gstatic.com"
     crossorigin
-  />
+  >
 
   <link
     href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Outfit:wght@300;400;500;600;700&display=swap"
     rel="stylesheet"
-  />
+  >
 
   <!-- CSS -->
   <link
     rel="stylesheet"
     href="style.css"
-  />
+  >
 
 </head>
 
 <body>
 
-  <!-- Background Orbs -->
+  <!-- BACKGROUND -->
   <div class="bg-orbs">
 
     <div class="orb orb-1"></div>
-
     <div class="orb orb-2"></div>
-
     <div class="orb orb-3"></div>
-
     <div class="orb orb-4"></div>
 
   </div>
 
-  <!-- Particles -->
+  <!-- PARTICLES -->
   <div
     class="particles"
     id="particles"
   ></div>
 
-  <!-- SCREEN 1 -->
+  <!-- ONBOARDING SCREEN -->
   <section
     class="screen"
     id="screen-onboarding"
@@ -66,7 +63,7 @@
 
     <div class="onboarding-card glass-card">
 
-      <!-- Avatar -->
+      <!-- AVATAR -->
       <div class="priya-avatar-wrap">
 
         <div class="priya-avatar">
@@ -95,7 +92,7 @@
 
       </div>
 
-      <!-- Branding -->
+      <!-- TITLE -->
       <h1 class="brand-name">
         Sakha-Sakhi
       </h1>
@@ -104,7 +101,7 @@
         Your Emotional Companion
       </div>
 
-      <!-- Intro -->
+      <!-- INTRO -->
       <div class="onboarding-text">
 
         <p>
@@ -118,7 +115,7 @@
 
       </div>
 
-      <!-- Name Form -->
+      <!-- NAME INPUT -->
       <div class="name-form">
 
         <div class="input-group">
@@ -128,11 +125,11 @@
             id="user-name-input"
             class="name-input"
             placeholder="Enter your name..."
-          />
+          >
 
         </div>
 
-        <!-- IMPORTANT FIX -->
+        <!-- BUTTON -->
         <button
           type="button"
           class="btn-start"
@@ -159,8 +156,7 @@
 
   </section>
 
-  <!-- SCREEN 2 -->
-  <!-- IMPORTANT FIX -->
+  <!-- CHAT SCREEN -->
   <section
     class="screen"
     id="screen-chat"
@@ -179,7 +175,6 @@
             <div class="ha-eyes">
 
               <div class="ha-eye"></div>
-
               <div class="ha-eye"></div>
 
             </div>
@@ -202,17 +197,15 @@
             class="header-status"
             id="header-status"
           >
-            ● Online & listening
+            ● Online & Listening
           </div>
 
         </div>
 
       </div>
 
-      <!-- Mood Badge -->
-      <div
-        class="mood-badge"
-      >
+      <!-- MOOD -->
+      <div class="mood-badge">
 
         <span
           class="mood-emoji"
@@ -256,22 +249,7 @@
           onclick="sendMessage()"
         >
 
-          <svg
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-          >
-
-            <path
-              d="M22 2L11 13"
-            />
-
-            <path
-              d="M22 2L15 22L11 13L2 9L22 2Z"
-            />
-
-          </svg>
+          SEND
 
         </button>
 
@@ -285,8 +263,11 @@
 
   </section>
 
-  <!-- JS -->
-  <script src="app.js"></script>
+  <!-- JAVASCRIPT -->
+  <script
+    src="app.js"
+    defer
+  ></script>
 
 </body>
 </html>
