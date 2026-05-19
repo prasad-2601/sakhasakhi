@@ -3,135 +3,100 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Sakha-Sakhi — Your personal AI companion chatbot. Talk to Sakha-Sakhi about anything and receive warm, positive, NLP-powered responses."/>
-  <title>Sakha-Sakhi — My Companion 💜</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+  <title>Sakha-Sakhi 💜</title>
+
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-  <!-- ─── ANIMATED BACKGROUND ─── -->
-  <div class="bg-orbs">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-    <div class="orb orb-4"></div>
+<!-- PARTICLES -->
+<div class="particles" id="particles"></div>
+
+<!-- ONBOARDING SCREEN -->
+<div class="screen" id="screen-onboarding">
+
+  <div class="onboarding-card">
+
+    <h1>Sakha-Sakhi 💜</h1>
+
+    <p>Your emotional AI companion</p>
+
+    <input
+      type="text"
+      id="user-name-input"
+      placeholder="Enter your name..."
+    >
+
+    <button
+      type="button"
+      id="btn-start"
+      onclick="startChat()"
+    >
+      Let's Chat 💜
+    </button>
+
   </div>
 
-  <!-- ─── PARTICLES ─── -->
-  <div class="particles" id="particles"></div>
+</div>
 
-  <!-- ═══════════════════════════════════
-       SCREEN 1: NAME ONBOARDING
-  ═══════════════════════════════════ -->
-  <div class="screen" id="screen-onboarding">
-    <div class="onboarding-card glass-card">
+<!-- CHAT SCREEN -->
+<div
+  class="screen"
+  id="screen-chat"
+  style="display:none;"
+>
 
-      <div class="priya-avatar-wrap">
-        <div class="priya-avatar">
-          <div class="avatar-face">
-            <div class="avatar-eyes">
-              <div class="eye eye-left"><div class="pupil"></div></div>
-              <div class="eye eye-right"><div class="pupil"></div></div>
-            </div>
-            <div class="avatar-smile"></div>
-          </div>
-          <div class="avatar-pulse"></div>
-        </div>
-      </div>
+  <!-- HEADER -->
+  <div class="chat-header">
 
-      <h1 class="brand-name">Sakha-Sakhi</h1>
-      <p class="brand-tagline">Your companion, always.</p>
+    <div>
+      <h2>Sakha-Sakhi 💜</h2>
 
-      <div class="onboarding-text">
-        <p>Hey there! 👋 I'm <span class="highlight">Sakha-Sakhi</span> — your personal companion.<br>
-        I'm here to listen, uplift, and be your friend. 💜</p>
-        <p class="sub-text">Before we start, what should I call you?</p>
-      </div>
-
-      <div class="name-form" id="name-form">
-        <div class="input-group">
-          <input
-            type="text"
-            id="user-name-input"
-            class="name-input"
-            placeholder="Your name..."
-            maxlength="30"
-            autocomplete="off"
-            autocapitalize="words"
-            spellcheck="false"
-          />
-          <div class="input-line"></div>
-        </div>
-        <button class="btn-start" id="btn-start" onclick="startChat()">
-          <span class="btn-text">Let's Chat! 💜</span>
-          <span class="btn-icon">→</span>
-        </button>
-      </div>
-
-      <p class="privacy-note">💙 Your conversations are private &amp; safe</p>
+      <span
+        id="header-status"
+      >
+        ● Online & listening
+      </span>
     </div>
+
+    <div
+      class="mood-badge"
+      id="mood-badge"
+    >
+      <span id="mood-emoji">😊</span>
+      <span id="mood-label">Calm</span>
+    </div>
+
   </div>
 
-  <!-- ═══════════════════════════════════
-       SCREEN 2: CHAT INTERFACE
-  ═══════════════════════════════════ -->
-  <div id="screen-chat" style="display:none; width:100%; height:100vh; flex-direction:column;">
-    <!-- Header -->
-    <header class="chat-header glass-header">
-      <div class="header-left">
-        <div class="header-avatar">
-          <div class="ha-face">
-            <div class="ha-eyes">
-              <div class="ha-eye"></div>
-              <div class="ha-eye"></div>
-            </div>
-            <div class="ha-smile"></div>
-          </div>
-          <div class="status-dot"></div>
-        </div>
-        <div class="header-info">
-          <span class="header-name">Sakha-Sakhi</span>
-          <span class="header-status" id="header-status">● Online &amp; listening</span>
-        </div>
-      </div>
-      <div class="header-right">
-        <div class="mood-badge" id="mood-badge">
-          <span class="mood-emoji" id="mood-emoji">😊</span>
-          <span class="mood-label" id="mood-label">Calm</span>
-        </div>
-      </div>
-    </header>
+  <!-- CHAT -->
+  <div
+    class="chat-window"
+    id="chat-window"
+  ></div>
 
-    <!-- Chat Messages -->
-    <div class="chat-window" id="chat-window">
-      <div class="chat-date-divider"><span>Today</span></div>
-      <!-- Messages injected here -->
-    </div>
+  <!-- INPUT -->
+  <div class="chat-input-area">
 
-    <!-- Input Area -->
-    <div class="chat-input-area glass-footer">
-      <div class="input-wrapper">
-        <textarea
-          id="msg-input"
-          class="msg-textarea"
-          placeholder="Tell me anything... I'm listening 💜"
-          rows="1"
-          maxlength="1000"
-        ></textarea>
-        <button class="btn-send" id="btn-send" onclick="sendMessage()">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </div>
-      <p class="char-hint">Press <kbd>Enter</kbd> to send · <kbd>Shift+Enter</kbd> for new line</p>
-    </div>
+    <textarea
+      id="msg-input"
+      placeholder="Tell me anything..."
+      rows="1"
+    ></textarea>
+
+    <button
+      id="btn-send"
+      onclick="sendMessage()"
+    >
+      Send
+    </button>
+
   </div>
+
+</div>
 
 <script src="app.js"></script>
+
 </body>
 </html>
