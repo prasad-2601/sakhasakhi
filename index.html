@@ -234,22 +234,45 @@
 <!-- FOOTER -->
 <footer class="glass-footer">
 
-  <div class="input-wrapper">
+  <div
+    class="input-wrapper"
+    style="
+      display:flex;
+      align-items:center;
+      gap:12px;
+      width:100%;
+    "
+  >
+
+    <!-- INPUT -->
 
     <textarea
       id="msg-input"
       class="msg-textarea"
       placeholder="Type your message..."
       rows="1"
+      style="
+        flex:1;
+        resize:none;
+        padding:16px;
+      "
     ></textarea>
+
+    <!-- SEND BUTTON -->
 
     <button
       type="button"
-      class="btn-send"
       id="btn-send"
-      onclick="sendMessage()"
+      class="btn-send"
+      onclick="sendMessage(); return false;"
+      style="
+        cursor:pointer;
+        min-width:70px;
+      "
     >
+
       SEND
+
     </button>
 
   </div>
