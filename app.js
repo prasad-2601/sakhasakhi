@@ -3,10 +3,12 @@ function startChat(){
   const input =
     document.getElementById("user-name-input");
 
+  if(!input) return;
+
   const name =
     input.value.trim();
 
-  if(!name){
+  if(name === ""){
 
     alert("Please enter your name 💜");
 
@@ -20,7 +22,7 @@ function startChat(){
   userInitial =
     userName.charAt(0).toUpperCase();
 
-  // GET SCREENS
+  // GET ELEMENTS
   const onboarding =
     document.getElementById(
       "screen-onboarding"
@@ -31,18 +33,33 @@ function startChat(){
       "screen-chat"
     );
 
-  // HIDE FIRST SCREEN
-  onboarding.style.display =
-    "none";
+  // SAFETY CHECK
+  if(!onboarding || !chat){
 
-  // SHOW CHAT SCREEN
-  chat.style.display =
-    "flex";
+    console.log(
+      "Screen elements not found"
+    );
 
-  chat.style.flexDirection =
-    "column";
+    return;
+  }
 
-  // FIRST BOT MESSAGE
+  // SHOW CHAT FIRST
+  chat.style.display = "flex";
+
+  // HIDE ONBOARDING AFTER
+  onboarding.style.display = "none";
+
+  // FORCE LAYOUT
+  chat.style.visibility = "visible";
+
+  chat.style.opacity = "1";
+
+  chat.style.flexDirection = "column";
+
+  chat.style.justifyContent =
+    "space-between";
+
+  // FIRST MESSAGE
   appendBotMessage(
     `Hey ${userName}! 💜 I'm Sakha-Sakhi. How are you feeling today?`,
     "😊",
@@ -68,5 +85,5 @@ function startChat(){
       msgInput.focus();
     }
 
-  }, 300);
+  }, 200);
 }
