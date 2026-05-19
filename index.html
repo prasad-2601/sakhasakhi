@@ -231,36 +231,34 @@
       id="chat-window"
     ></main>
 
-    <!-- FOOTER -->
-    <footer class="glass-footer">
+<!-- FOOTER -->
+<footer class="glass-footer">
 
-      <div class="input-wrapper">
+  <div class="input-wrapper">
 
-        <textarea
-          id="msg-input"
-          class="msg-textarea"
-          placeholder="Type your message..."
-          rows="1"
-        ></textarea>
+    <textarea
+      id="msg-input"
+      class="msg-textarea"
+      placeholder="Type your message..."
+      rows="1"
+    ></textarea>
 
-        <button
-          class="btn-send"
-          id="btn-send"
-          onclick="sendMessage()"
-        >
+    <button
+      type="button"
+      class="btn-send"
+      id="btn-send"
+      onclick="sendMessage()"
+    >
+      SEND
+    </button>
 
-          SEND
+  </div>
 
-        </button>
+  <div class="char-hint">
+    Press Enter to send
+  </div>
 
-      </div>
-
-      <div class="char-hint">
-        Press <kbd>Enter</kbd> to send
-      </div>
-
-    </footer>
-
+</footer>
   </section>
 
   <!-- JAVASCRIPT -->
