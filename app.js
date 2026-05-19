@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const msgInput =
     document.getElementById("msg-input");
 
-  // Enter key for name input
+  // ENTER on name input
   if(nameInput){
 
     nameInput.addEventListener("keydown", (e) => {
@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Enter key for chat input
+  // ENTER on chat input
   if(msgInput){
 
     msgInput.addEventListener("keydown", (e) => {
@@ -117,25 +117,27 @@ function startChat(){
   userInitial =
     userName.charAt(0).toUpperCase();
 
-  // Hide onboarding screen
-  document.getElementById(
-    "screen-onboarding"
-  ).style.display = "none";
+  // HIDE onboarding
+  const onboarding =
+    document.getElementById("screen-onboarding");
 
-  // Show chat screen
+  onboarding.style.display = "none";
+
+  // SHOW chat
   const chat =
-    document.getElementById(
-      "screen-chat"
-    );
+    document.getElementById("screen-chat");
 
   chat.style.display = "flex";
 
-  chat.style.flexDirection =
-    "column";
+  chat.style.flexDirection = "column";
 
-  // Welcome message
+  chat.style.width = "100%";
+
+  chat.style.height = "100vh";
+
+  // FIRST BOT MESSAGE
   appendBotMessage(
-    `Hey ${userName}! 💜 I'm Sakha-Sakhi — your companion always. How are you feeling today?`,
+    `Hey ${userName}! 💜 I'm Sakha-Sakhi. I'm here to listen and support you always. How are you feeling today?`,
     "😊",
     "Calm",
     "neutral"
@@ -146,11 +148,16 @@ function startChat(){
     "Calm"
   );
 
+  // FOCUS INPUT
   setTimeout(() => {
 
-    document
-      .getElementById("msg-input")
-      .focus();
+    const msgInput =
+      document.getElementById("msg-input");
+
+    if(msgInput){
+
+      msgInput.focus();
+    }
 
   }, 300);
 }
@@ -192,11 +199,11 @@ async function sendMessage(){
   const typingId =
     showTypingIndicator();
 
-  // Detect emotion
+  // DETECT MOOD
   const mood =
     detectEmotion(message);
 
-  // Generate smart reply
+  // GENERATE REPLY
   const reply =
     generateReply(message, mood.emotion);
 
@@ -229,7 +236,7 @@ async function sendMessage(){
       .getElementById("btn-send")
       .disabled = false;
 
-  }, 1200);
+  }, 1000 + Math.random()*1200);
 }
 
 
@@ -242,16 +249,12 @@ function detectEmotion(message){
   const text =
     message.toLowerCase();
 
-  // JOY
   if(
     text.includes("happy") ||
     text.includes("excited") ||
     text.includes("great") ||
     text.includes("amazing") ||
-    text.includes("good") ||
-    text.includes("won") ||
-    text.includes("success") ||
-    text.includes("love")
+    text.includes("good")
   ){
     return {
       emotion:"joy",
@@ -260,15 +263,12 @@ function detectEmotion(message){
     };
   }
 
-  // SADNESS
   if(
     text.includes("sad") ||
     text.includes("cry") ||
-    text.includes("broken") ||
     text.includes("hurt") ||
     text.includes("depressed") ||
-    text.includes("pain") ||
-    text.includes("upset")
+    text.includes("broken")
   ){
     return {
       emotion:"sadness",
@@ -277,13 +277,10 @@ function detectEmotion(message){
     };
   }
 
-  // ANGER
   if(
     text.includes("angry") ||
     text.includes("mad") ||
-    text.includes("hate") ||
-    text.includes("frustrated") ||
-    text.includes("annoyed")
+    text.includes("frustrated")
   ){
     return {
       emotion:"anger",
@@ -292,14 +289,11 @@ function detectEmotion(message){
     };
   }
 
-  // FEAR
   if(
-    text.includes("fear") ||
-    text.includes("scared") ||
     text.includes("anxiety") ||
-    text.includes("worried") ||
     text.includes("stress") ||
-    text.includes("nervous")
+    text.includes("worried") ||
+    text.includes("fear")
   ){
     return {
       emotion:"fear",
@@ -308,29 +302,25 @@ function detectEmotion(message){
     };
   }
 
-  // TIRED
-  if(
-    text.includes("tired") ||
-    text.includes("exhausted") ||
-    text.includes("drained")
-  ){
-    return {
-      emotion:"tired",
-      emoji:"🌙",
-      label:"Exhausted"
-    };
-  }
-
-  // LONELY
   if(
     text.includes("alone") ||
-    text.includes("lonely") ||
-    text.includes("nobody")
+    text.includes("lonely")
   ){
     return {
       emotion:"lonely",
       emoji:"💜",
       label:"Lonely"
+    };
+  }
+
+  if(
+    text.includes("tired") ||
+    text.includes("exhausted")
+  ){
+    return {
+      emotion:"tired",
+      emoji:"🌙",
+      label:"Exhausted"
     };
   }
 
@@ -343,101 +333,198 @@ function detectEmotion(message){
 
 
 // ─────────────────────────────────────────────
-// SMART REPLY ENGINE
+// HUMAN-LIKE REPLY ENGINE
 // ─────────────────────────────────────────────
 
 function generateReply(message, emotion){
 
-  const replies = {
+  const text =
+    message.toLowerCase();
+
+  const motivational = [
+
+    "🌸 One difficult moment doesn't define your life.",
+
+    "💜 You deserve kindness too.",
+
+    "🌈 Better days will come back slowly.",
+
+    "✨ Healing takes time and that's okay.",
+
+    "🌙 You're doing better than you think.",
+
+    "🔥 Hard times create strong people.",
+
+    "💙 It's okay to rest sometimes."
+  ];
+
+  const responses = {
 
     joy: [
 
-      `That's amazing ${userName}! 🌟 I'm genuinely happy for you!`,
+      `That honestly sounds wonderful 😄`,
 
-      `Yesss ${userName}! 🎉 You deserve this happiness.`,
+      `I'm genuinely happy hearing that 🌟`,
 
-      `Wowww that's incredible 💜 Keep shining!`,
+      `You sound really excited right now 💜`,
 
-      `That made me smile too 😄`
+      `Moments like these are beautiful ✨`
     ],
 
     sadness: [
 
-      `${userName}, I'm here with you 💙 You don't have to carry this alone.`,
+      `I'm really sorry you're feeling this way 💙`,
 
-      `It's okay to feel this way 🌙 Your feelings matter.`,
+      `That sounds emotionally heavy honestly.`,
 
-      `Even dark nights pass 🌸`,
+      `You don't always have to pretend you're okay 🌙`,
 
-      `You are stronger than this moment 💜`
+      `I'm glad you shared this instead of hiding it 💜`
     ],
 
     anger: [
 
-      `That sounds really frustrating 🔥 Your feelings are valid.`,
+      `That would frustrate anyone honestly 🔥`,
 
-      `Take a deep breath 💜 We'll get through this together.`,
+      `Your feelings are completely valid.`,
 
-      `I understand why you'd feel angry 🌋`,
+      `I understand why you're upset.`,
 
-      `Sometimes anger means you've been hurt deeply.`
+      `Sometimes life feels unfair honestly.`
     ],
 
     fear: [
 
-      `It's okay to feel anxious sometimes 💚`,
+      `That sounds really stressful 💚`,
 
-      `You're safe here 🌿`,
+      `Anxiety can make everything feel heavier.`,
 
-      `Take one step at a time 💜`,
+      `Take things slowly 🌿`,
 
-      `You are braver than your fears.`
+      `You don't need all the answers today.`
     ],
 
     lonely: [
 
-      `You're not alone right now 💜 I'm here.`,
+      `Feeling lonely hurts deeply 💜`,
 
-      `Talking to me already took courage 🌟`,
+      `I'm here with you right now 🌸`,
 
-      `I hear you, ${userName}.`,
+      `Your presence matters more than you think.`,
 
-      `You matter more than you know 💙`
+      `You deserve people who understand you 💙`
     ],
 
     tired: [
 
-      `Rest is important 🌙 You've been carrying a lot.`,
+      `You sound emotionally drained 🌙`,
 
-      `Take things one step at a time 💜`,
+      `You've probably been carrying too much.`,
 
-      `You're doing better than you think 🌸`,
+      `Rest is important too 💜`,
 
-      `It's okay to pause and breathe.`
+      `It's okay to slow down sometimes.`
     ],
 
     neutral: [
 
-      `Tell me more 😊 I'm listening.`,
+      `Tell me more 😊`,
 
-      `That's interesting 🌟`,
+      `I'm listening carefully 💜`,
 
-      `How did that make you feel? 💜`,
+      `And how did that make you feel? 🌸`,
 
-      `I'm here with you 🌸`
+      `That sounds important to you 🌟`
     ]
   };
 
-  const pool =
-    replies[emotion] ||
-    replies["neutral"];
+  let pool =
+    responses[emotion] ||
+    responses["neutral"];
 
-  return pool[
-    Math.floor(
-      Math.random() *
-      pool.length
-    )
+  // CONTEXT REPLIES
+
+  if(
+    text.includes("exam") ||
+    text.includes("study")
+  ){
+
+    pool.push(
+      `Academic pressure can become exhausting 📚`,
+      `Please don't let marks define your worth 💜`
+    );
+  }
+
+  if(
+    text.includes("breakup") ||
+    text.includes("relationship")
+  ){
+
+    pool.push(
+      `Heartbreak changes people deeply 💔`,
+      `Emotional pain takes time to heal 🌙`
+    );
+  }
+
+  if(text.includes("family")){
+
+    pool.push(
+      `Family pressure can become emotionally heavy.`,
+      `You deserve understanding too 💙`
+    );
+  }
+
+  const response =
+    pool[
+      Math.floor(
+        Math.random() *
+        pool.length
+      )
+    ];
+
+  let finalReply =
+    response;
+
+  // RANDOM MOTIVATION
+
+  if(Math.random() > 0.4){
+
+    finalReply += "\n\n" +
+
+      motivational[
+        Math.floor(
+          Math.random() *
+          motivational.length
+        )
+      ];
+  }
+
+  // FOLLOW UP QUESTIONS
+
+  const followUps = [
+
+    "Do you want to talk more about it?",
+
+    "How long have you been feeling this way?",
+
+    "What happened exactly?",
+
+    "Tell me more honestly 💜"
   ];
+
+  if(Math.random() > 0.5){
+
+    finalReply += "\n\n" +
+
+      followUps[
+        Math.floor(
+          Math.random() *
+          followUps.length
+        )
+      ];
+  }
+
+  return finalReply;
 }
 
 
@@ -471,7 +558,7 @@ function appendBotMessage(
 
       <div class="msg-bubble bot-bubble">
 
-        ${text}
+        ${text.replace(/\n/g, "<br>")}
 
       </div>
 
@@ -539,7 +626,7 @@ function appendUserMessage(text){
 
 
 // ─────────────────────────────────────────────
-// TYPING INDICATOR
+// TYPING
 // ─────────────────────────────────────────────
 
 function showTypingIndicator(){
