@@ -20,7 +20,7 @@ function generateReply(message, emotion){
     "good evening"
   ];
 
-  // STRICT GREETING CHECK
+  // STRICT greeting check
   if(greetings.includes(text)){
 
     const greetingReplies = [
@@ -31,7 +31,7 @@ function generateReply(message, emotion){
 
       `Hii 🌸 I hope your day is going well.`,
 
-      `Heyy 💜 I'm always here for you.`,
+      `Heyy 💜 I'm here for you anytime.`,
 
       `Hello ✨ What's on your mind today?`,
 
@@ -66,7 +66,7 @@ function generateReply(message, emotion){
   ];
 
   // ─────────────────────────
-  // EMOTIONAL RESPONSES
+  // EMOTIONAL REPLIES
   // ─────────────────────────
 
   const responses = {
@@ -77,9 +77,7 @@ function generateReply(message, emotion){
 
       `I'm genuinely happy hearing that 💜`,
 
-      `You sound really excited 🌟`,
-
-      `That's beautiful to hear honestly ✨`
+      `You sound really excited 🌟`
     ],
 
     sadness: [
@@ -88,9 +86,7 @@ function generateReply(message, emotion){
 
       `You don't always have to pretend you're okay 🌙`,
 
-      `I'm glad you shared this instead of hiding it 💜`,
-
-      `That sounds emotionally heavy honestly.`
+      `I'm glad you shared this instead of hiding it 💜`
     ],
 
     anger: [
@@ -99,9 +95,7 @@ function generateReply(message, emotion){
 
       `Your feelings are valid 💜`,
 
-      `I understand why you're upset.`,
-
-      `Sometimes life feels unfair honestly.`
+      `I understand why you're upset.`
     ],
 
     fear: [
@@ -110,9 +104,7 @@ function generateReply(message, emotion){
 
       `Take things one step at a time 🌿`,
 
-      `You don't need all the answers today.`,
-
-      `Anxiety can make everything feel heavier.`
+      `You don't need all the answers today.`
     ],
 
     lonely: [
@@ -121,9 +113,7 @@ function generateReply(message, emotion){
 
       `I'm here with you right now 🌸`,
 
-      `Your existence matters more than you know.`,
-
-      `You deserve people who understand you 💙`
+      `Your existence matters more than you know.`
     ],
 
     neutral: [
@@ -132,9 +122,7 @@ function generateReply(message, emotion){
 
       `I'm listening carefully 💜`,
 
-      `That sounds important to you 🌸`,
-
-      `Go on... I'm listening ✨`
+      `That sounds important to you 🌸`
     ]
   };
 
@@ -146,66 +134,38 @@ function generateReply(message, emotion){
   // CONTEXT-AWARE REPLIES
   // ─────────────────────────
 
-  // Exams / Studies
   if(
     text.includes("exam") ||
-    text.includes("study") ||
-    text.includes("marks")
+    text.includes("study")
   ){
 
     pool.push(
       `Academic pressure can become exhausting 📚`,
-      `Please don't let marks define your worth 💜`,
-      `You're more important than grades 🌸`
+      `Please don't let marks define your worth 💜`
     );
   }
 
-  // Relationship
   if(
     text.includes("breakup") ||
-    text.includes("relationship") ||
-    text.includes("love")
+    text.includes("relationship")
   ){
 
     pool.push(
       `Heartbreak changes people deeply 💔`,
-      `Emotional pain takes time to heal 🌙`,
-      `Relationships can leave emotional scars.`
+      `Emotional pain takes time to heal 🌙`
     );
   }
 
-  // Family
   if(text.includes("family")){
 
     pool.push(
       `Family pressure can become emotionally heavy 💙`,
-      `You deserve understanding too 🌸`,
-      `Sometimes family situations become overwhelming.`
-    );
-  }
-
-  // Friends
-  if(text.includes("friend")){
-
-    pool.push(
-      `Friendship problems can hurt deeply 💜`,
-      `Being misunderstood by friends feels painful.`,
-      `Real friendships should feel safe 🌸`
-    );
-  }
-
-  // Alone
-  if(text.includes("alone")){
-
-    pool.push(
-      `You don't deserve to feel alone 💜`,
-      `Loneliness can make everything feel heavier.`,
-      `I'm glad you're talking instead of staying silent 🌸`
+      `You deserve understanding too 🌸`
     );
   }
 
   // ─────────────────────────
-  // RANDOM RESPONSE
+  // RANDOM REPLY
   // ─────────────────────────
 
   const response =
@@ -219,7 +179,7 @@ function generateReply(message, emotion){
   let finalReply =
     response;
 
-  // RANDOM MOTIVATION
+  // Add motivation randomly
   if(Math.random() > 0.4){
 
     finalReply += "\n\n" +
@@ -228,32 +188,6 @@ function generateReply(message, emotion){
         Math.floor(
           Math.random() *
           motivational.length
-        )
-      ];
-  }
-
-  // OPTIONAL FOLLOW-UP
-  const followUps = [
-
-    "Do you want to talk more about it?",
-
-    "How has your day been?",
-
-    "I'm listening 💜",
-
-    "Tell me more honestly.",
-
-    "What happened exactly?"
-  ];
-
-  if(Math.random() > 0.5){
-
-    finalReply += "\n\n" +
-
-      followUps[
-        Math.floor(
-          Math.random() *
-          followUps.length
         )
       ];
   }
