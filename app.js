@@ -1,105 +1,63 @@
-async function sendMessage() {
+function startChat() {
 
-  if (isWaiting) return;
+  const input =
+    document.getElementById("user-name-input");
 
-  const input   = document.getElementById("msg-input");
-  const message = input.value.trim();
+  const name =
+    input.value.trim();
 
-  if (!message) return;
+  if (!name) {
 
-  // User message
-  appendUserMessage(message);
+    input.style.borderColor = "#ec4899";
 
-  input.value = "";
+    input.placeholder =
+      "Please enter your name 💜";
 
-  autoResize(input);
+    input.focus();
 
-  // Typing state
-  isWaiting = true;
-
-  document.getElementById("btn-send").disabled = true;
-
-  updateHeaderStatus("● Typing...", "#c084fc");
-
-  const typingId = showTypingIndicator();
-
-  // Mood detection
-  let moodEmoji = "😊";
-  let moodLabel = "Calm";
-  let emotion   = "neutral";
-
-  const lower = message.toLowerCase();
-
-  if (lower.includes("happy") || lower.includes("excited")) {
-    moodEmoji = "😄";
-    moodLabel = "Joyful";
-    emotion = "joy";
+    return;
   }
 
-  else if (lower.includes("sad") || lower.includes("cry")) {
-    moodEmoji = "💙";
-    moodLabel = "Feeling Low";
-    emotion = "sadness";
-  }
+  userName =
+    name.charAt(0).toUpperCase() +
+    name.slice(1);
 
-  else if (lower.includes("angry") || lower.includes("mad")) {
-    moodEmoji = "🔥";
-    moodLabel = "Frustrated";
-    emotion = "anger";
-  }
+  userInitial =
+    userName.charAt(0).toUpperCase();
 
-  else if (lower.includes("tired")) {
-    moodEmoji = "🌙";
-    moodLabel = "Exhausted";
-    emotion = "tired";
-  }
+  // Hide onboarding screen
+  const onboarding =
+    document.getElementById("screen-onboarding");
 
-  // Smart replies
-  const replies = [
-    "I'm listening 💜 Tell me more.",
-    "That sounds important to you 🌸",
-    "You matter, and your feelings matter too 💙",
-    "I'm here for you 🌟",
-    "You're stronger than you think 💜",
-    "Thank you for sharing that with me 🌙",
-    "Everything will be okay 💕",
-    "I understand how you feel 🤗",
-    "You're not alone 🌈",
-    "Take a deep breath 💜"
-  ];
+  onboarding.style.display = "none";
 
-  const randomReply =
-    replies[Math.floor(Math.random() * replies.length)];
+  // Show chat screen
+  const chat =
+    document.getElementById("screen-chat");
 
-  // Fake typing delay
-  const delay = 1000 + Math.random() * 1500;
+  chat.style.display = "flex";
+
+  // Welcome banner
+  showWelcomeBanner();
+
+  // First bot message
+  appendBotMessage(
+    `Hey ${userName}! 💜 I'm Sakha-Sakhi — your companion always. How are you feeling today?`,
+    "😊",
+    "Calm",
+    "joy"
+  );
+
+  updateMoodBadge(
+    "😊",
+    "Calm"
+  );
 
   setTimeout(() => {
 
-    removeTypingIndicator(typingId);
+    document
+      .getElementById("msg-input")
+      .focus();
 
-    appendBotMessage(
-      randomReply,
-      moodEmoji,
-      moodLabel,
-      emotion
-    );
-
-    updateMoodBadge(
-      moodEmoji,
-      moodLabel
-    );
-
-    updateHeaderStatus(
-      "● Online & listening",
-      "#22c55e"
-    );
-
-    isWaiting = false;
-
-    document.getElementById("btn-send").disabled = false;
-
-    document.getElementById("msg-input").focus();
-
-  }, delay);
+  }, 300);
 }
