@@ -138,7 +138,7 @@ function startChat(){
   setTimeout(() => {
 
     appendBotMessage(
-      `Hey ${userName}! 💜 I'm Priya. I'm here to support you emotionally and listen to you always. How are you feeling today?`,
+      `Hey ${userName}! 💜 I'm Sakha-Sakhi. I'm here to support you emotionally and listen to you always. How are you feeling today?`,
       "😊",
       "Calm",
       "neutral"
