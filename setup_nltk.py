@@ -27,3 +27,4 @@ for pkg in packages:
         print(f"  SKIP: {pkg} -- {e}")
 
 print("\nNLTK setup complete! You can now run: python app.py")
+
