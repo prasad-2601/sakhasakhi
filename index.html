@@ -160,7 +160,7 @@
   <section
     class="screen"
     id="screen-chat"
-    style="display:none;"
+    style="display: none; flex-direction: column;"
   >
 
     <!-- HEADER -->
@@ -231,57 +231,39 @@
       id="chat-window"
     ></main>
 
-<!-- FOOTER -->
-<footer class="glass-footer">
+    <!-- FOOTER -->
+    <footer class="glass-footer">
 
-  <div
-    class="input-wrapper"
-    style="
-      display:flex;
-      align-items:center;
-      gap:12px;
-      width:100%;
-    "
-  >
+      <div
+        class="input-wrapper"
+      >
 
-    <!-- INPUT -->
+        <!-- INPUT -->
+        <textarea
+          id="msg-input"
+          class="msg-textarea"
+          placeholder="Type your message..."
+          rows="1"
+        ></textarea>
 
-    <textarea
-      id="msg-input"
-      class="msg-textarea"
-      placeholder="Type your message..."
-      rows="1"
-      style="
-        flex:1;
-        resize:none;
-        padding:16px;
-      "
-    ></textarea>
+        <!-- SEND BUTTON -->
+        <button
+          type="button"
+          id="btn-send"
+          class="btn-send"
+          onclick="sendMessage(); return false;"
+        >
+          SEND
+        </button>
 
-    <!-- SEND BUTTON -->
+      </div>
 
-    <button
-      type="button"
-      id="btn-send"
-      class="btn-send"
-      onclick="sendMessage(); return false;"
-      style="
-        cursor:pointer;
-        min-width:70px;
-      "
-    >
+      <div class="char-hint">
+        Press Enter to send
+      </div>
 
-      SEND
+    </footer>
 
-    </button>
-
-  </div>
-
-  <div class="char-hint">
-    Press Enter to send
-  </div>
-
-</footer>
   </section>
 
   <!-- JAVASCRIPT -->
