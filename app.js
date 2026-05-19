@@ -1,74 +1,124 @@
-// GLOBALS
+// ======================================
+// SAKHA-SAKHI COMPLETE WORKING JS
+// ======================================
+
+// GLOBAL VARIABLES
 let userName = "";
 let userInitial = "";
 
+// ======================================
 // START CHAT
+// ======================================
+
 function startChat() {
 
-  console.log("startChat running");
+  try {
 
-  const input =
-    document.getElementById(
-      "user-name-input"
+    // INPUT
+    const input =
+      document.getElementById(
+        "user-name-input"
+      );
+
+    if (!input) {
+
+      alert("Input field not found");
+      return;
+    }
+
+    // USER NAME
+    const name =
+      input.value.trim();
+
+    if (name === "") {
+
+      alert(
+        "Please enter your name 💜"
+      );
+
+      return;
+    }
+
+    // SAVE USER
+    userName =
+      name;
+
+    userInitial =
+      name.charAt(0).toUpperCase();
+
+    // SCREENS
+    const onboarding =
+      document.getElementById(
+        "screen-onboarding"
+      );
+
+    const chatScreen =
+      document.getElementById(
+        "screen-chat"
+      );
+
+    if (!onboarding || !chatScreen) {
+
+      alert("Screen error");
+      return;
+    }
+
+    // SWITCH SCREEN
+    onboarding.style.display =
+      "none";
+
+    chatScreen.style.display =
+      "flex";
+
+    chatScreen.style.flexDirection =
+      "column";
+
+    // BOT WELCOME MESSAGE
+    appendBotMessage(
+      `Hey ${userName}! 💜 I'm Sakha-Sakhi. How are you feeling today?`,
+      "😊",
+      "Calm"
     );
 
-  if (!input) {
+    // UPDATE MOOD
+    updateMoodBadge(
+      "😊",
+      "Calm"
+    );
 
-    alert("Input not found");
-    return;
+    // FOCUS INPUT
+    setTimeout(() => {
+
+      const msgInput =
+        document.getElementById(
+          "msg-input"
+        );
+
+      if (msgInput) {
+
+        msgInput.focus();
+      }
+
+    }, 200);
+
+  } catch (error) {
+
+    console.log(error);
+
+    alert(
+      "Error: " + error.message
+    );
   }
-
-  const name =
-    input.value.trim();
-
-  if (name === "") {
-
-    alert("Enter your name 💜");
-    return;
-  }
-
-  userName =
-    name;
-
-  userInitial =
-    name.charAt(0).toUpperCase();
-
-  // SCREENS
-  const onboarding =
-    document.getElementById(
-      "screen-onboarding"
-    );
-
-  const chat =
-    document.getElementById(
-      "screen-chat"
-    );
-
-  // SWITCH SCREEN
-  onboarding.style.display =
-    "none";
-
-  chat.style.display =
-    "flex";
-
-  // WELCOME MESSAGE
-  appendBotMessage(
-    `Hey ${userName}! 💜 I'm Sakha-Sakhi.`,
-    "😊",
-    "Calm"
-  );
-
-  updateMoodBadge(
-    "😊",
-    "Calm"
-  );
 }
 
+// ======================================
 // BOT MESSAGE
+// ======================================
+
 function appendBotMessage(
   text,
-  emoji,
-  mood
+  moodEmoji,
+  moodLabel
 ) {
 
   const chatWindow =
@@ -78,26 +128,63 @@ function appendBotMessage(
 
   if (!chatWindow) return;
 
-  const div =
+  // ROW
+  const row =
     document.createElement("div");
 
-  div.className =
-    "bot-message";
+  row.className =
+    "msg-row bot-row";
 
-  div.innerHTML = `
+  row.innerHTML = `
 
-    <div class="msg-bubble bot-bubble">
-      ${text}
+    <div class="msg-avatar">
+      🌸
     </div>
 
+    <div class="msg-bubble-wrap">
+
+      <div class="msg-bubble bot-bubble">
+
+        ${text}
+
+      </div>
+
+      <div
+        style="
+          display:flex;
+          gap:8px;
+          align-items:center;
+          margin-top:6px;
+        "
+      >
+
+        <span class="msg-time">
+
+          ${getTime()}
+
+        </span>
+
+        <span class="msg-emotion-tag">
+
+          ${moodEmoji}
+          ${moodLabel}
+
+        </span>
+
+      </div>
+
+    </div>
   `;
 
-  chatWindow.appendChild(div);
+  chatWindow.appendChild(row);
 
   scrollToBottom();
 }
 
+// ======================================
 // USER MESSAGE
+// ======================================
+
 function appendUserMessage(text) {
 
   const chatWindow =
@@ -105,57 +192,105 @@ function appendUserMessage(text) {
       "chat-window"
     );
 
-  const div =
+  if (!chatWindow) return;
+
+  // ROW
+  const row =
     document.createElement("div");
 
-  div.className =
-    "user-message";
+  row.className =
+    "msg-row user-row";
 
-  div.innerHTML = `
+  row.innerHTML = `
 
-    <div class="msg-bubble user-bubble">
-      ${text}
+    <div class="msg-avatar user-avatar">
+
+      ${userInitial}
+
     </div>
 
+    <div class="msg-bubble-wrap">
+
+      <div class="msg-bubble user-bubble">
+
+        ${text}
+
+      </div>
+
+      <span class="msg-time">
+
+        ${getTime()}
+
+      </span>
+
+    </div>
   `;
 
-  chatWindow.appendChild(div);
+  chatWindow.appendChild(row);
 
   scrollToBottom();
 }
 
+// ======================================
 // SEND MESSAGE
+// ======================================
+
 function sendMessage() {
 
-  const input =
-    document.getElementById(
-      "msg-input"
+  try {
+
+    const input =
+      document.getElementById(
+        "msg-input"
+      );
+
+    if (!input) {
+
+      alert("Message input not found");
+      return;
+    }
+
+    // GET MESSAGE
+    const text =
+      input.value.trim();
+
+    // EMPTY CHECK
+    if (text === "") return;
+
+    // USER MESSAGE
+    appendUserMessage(text);
+
+    // CLEAR INPUT
+    input.value = "";
+
+    // AUTO BOT REPLY
+    setTimeout(() => {
+
+      appendBotMessage(
+        "I'm here with you 💜",
+        "😊",
+        "Supportive"
+      );
+
+    }, 700);
+
+  } catch (error) {
+
+    console.log(error);
+
+    alert(
+      "Send Error: " + error.message
     );
-
-  const text =
-    input.value.trim();
-
-  if (text === "") return;
-
-  appendUserMessage(text);
-
-  input.value = "";
-
-  setTimeout(() => {
-
-    appendBotMessage(
-      "I'm listening 💜",
-      "😊",
-      "Calm"
-    );
-
-  }, 600);
+  }
 }
 
+// ======================================
 // MOOD BADGE
+// ======================================
+
 function updateMoodBadge(
   emoji,
-  mood
+  label
 ) {
 
   const moodEmoji =
@@ -168,16 +303,23 @@ function updateMoodBadge(
       "mood-label"
     );
 
-  if (moodEmoji)
+  if (moodEmoji) {
+
     moodEmoji.innerText =
       emoji;
+  }
 
-  if (moodLabel)
+  if (moodLabel) {
+
     moodLabel.innerText =
-      mood;
+      label;
+  }
 }
 
-// SCROLL
+// ======================================
+// SCROLL TO BOTTOM
+// ======================================
+
 function scrollToBottom() {
 
   const chatWindow =
@@ -192,10 +334,28 @@ function scrollToBottom() {
   }
 }
 
-// ENTER KEY
+// ======================================
+// GET TIME
+// ======================================
+
+function getTime() {
+
+  return new Date()
+    .toLocaleTimeString([], {
+
+      hour: "2-digit",
+      minute: "2-digit"
+
+    });
+}
+
+// ======================================
+// ENTER KEY SUPPORT
+// ======================================
+
 document.addEventListener(
   "DOMContentLoaded",
-  () => {
+  function () {
 
     const input =
       document.getElementById(
