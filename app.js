@@ -1,23 +1,30 @@
-function startChat(){
+// GLOBAL VARIABLES
+let userName = "";
+let userInitial = "";
 
-  try{
+// ─────────────────────────────
+// START CHAT
+// ─────────────────────────────
+
+function startChat() {
+
+  try {
 
     const input =
       document.getElementById(
         "user-name-input"
       );
 
-    if(!input){
+    if (!input) {
 
       alert("Input not found");
-
       return;
     }
 
     const name =
       input.value.trim();
 
-    if(name === ""){
+    if (name === "") {
 
       alert(
         "Please enter your name 💜"
@@ -45,43 +52,39 @@ function startChat(){
         "screen-chat"
       );
 
+    if (!onboarding || !chat) {
+
+      alert("Screen elements missing");
+      return;
+    }
+
     // SHOW CHAT
-    chat.style.display =
-      "flex";
+    chat.style.display = "flex";
 
     // HIDE ONBOARDING
-    onboarding.style.display =
-      "none";
+    onboarding.style.display = "none";
 
     // FORCE FLEX
-    chat.style.flexDirection =
-      "column";
+    chat.style.flexDirection = "column";
 
     chat.style.justifyContent =
       "space-between";
 
-    // SAFE CHAT WINDOW CHECK
-    const chatWindow =
-      document.getElementById(
-        "chat-window"
-      );
-
-    if(chatWindow){
-
-      appendBotMessage(
-        `Hey ${userName}! 💜 I'm Sakha-Sakhi. How are you feeling today?`,
-        "😊",
-        "Calm",
-        "neutral"
-      );
-
-    }
-
-    // MOOD BADGE
-    updateMoodBadge(
+    // WELCOME MESSAGE
+    appendBotMessage(
+      `Hey ${userName}! 💜 I'm Sakha-Sakhi. How are you feeling today?`,
       "😊",
       "Calm"
     );
+
+    // UPDATE BADGE
+    if (typeof updateMoodBadge === "function") {
+
+      updateMoodBadge(
+        "😊",
+        "Calm"
+      );
+    }
 
     // INPUT FOCUS
     const msgInput =
@@ -89,7 +92,7 @@ function startChat(){
         "msg-input"
       );
 
-    if(msgInput){
+    if (msgInput) {
 
       setTimeout(() => {
 
@@ -98,7 +101,7 @@ function startChat(){
       }, 200);
     }
 
-  }catch(error){
+  } catch (error) {
 
     console.log(error);
 
@@ -107,6 +110,7 @@ function startChat(){
     );
   }
 }
+
 // ─────────────────────────────
 // APPEND BOT MESSAGE
 // ─────────────────────────────
@@ -115,14 +119,14 @@ function appendBotMessage(
   text,
   moodEmoji,
   moodLabel
-){
+) {
 
   const chatWindow =
     document.getElementById(
       "chat-window"
     );
 
-  if(!chatWindow) return;
+  if (!chatWindow) return;
 
   const row =
     document.createElement("div");
@@ -174,19 +178,18 @@ function appendBotMessage(
   scrollToBottom();
 }
 
-
 // ─────────────────────────────
 // APPEND USER MESSAGE
 // ─────────────────────────────
 
-function appendUserMessage(text){
+function appendUserMessage(text) {
 
   const chatWindow =
     document.getElementById(
       "chat-window"
     );
 
-  if(!chatWindow) return;
+  if (!chatWindow) return;
 
   const row =
     document.createElement("div");
@@ -223,25 +226,34 @@ function appendUserMessage(text){
 
   scrollToBottom();
 }
-function scrollToBottom(){
+
+// ─────────────────────────────
+// SCROLL
+// ─────────────────────────────
+
+function scrollToBottom() {
 
   const chatWindow =
     document.getElementById(
       "chat-window"
     );
 
-  if(chatWindow){
+  if (chatWindow) {
 
     chatWindow.scrollTop =
       chatWindow.scrollHeight;
   }
 }
 
-function getTime(){
+// ─────────────────────────────
+// TIME
+// ─────────────────────────────
+
+function getTime() {
 
   return new Date()
     .toLocaleTimeString([], {
-      hour:"2-digit",
-      minute:"2-digit"
+      hour: "2-digit",
+      minute: "2-digit"
     });
 }
