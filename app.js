@@ -1,10 +1,6 @@
-/**
- * Sakha-Sakhi — GitHub Pages Version
- * Frontend-only AI Companion
- */
-
 // ─────────────────────────────────────────────
-// STATE
+// Sakha-Sakhi Frontend AI Companion
+// GitHub Pages Compatible
 // ─────────────────────────────────────────────
 
 let userName = "";
@@ -26,11 +22,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const msgInput =
     document.getElementById("msg-input");
 
-  // Enter key on name input
   if(nameInput){
+
     nameInput.addEventListener("keydown", (e) => {
 
-      if (e.key === "Enter") {
+      if(e.key === "Enter") {
 
         e.preventDefault();
 
@@ -39,24 +35,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Message input listeners
   if(msgInput){
-
-    msgInput.addEventListener("input", () => {
-      autoResize(msgInput);
-    });
 
     msgInput.addEventListener("keydown", (e) => {
 
-      if (
-        e.key === "Enter" &&
-        !e.shiftKey
-      ) {
+      if(e.key === "Enter" && !e.shiftKey){
 
         e.preventDefault();
 
         sendMessage();
       }
+    });
+
+    msgInput.addEventListener("input", () => {
+
+      autoResize(msgInput);
+
     });
   }
 
@@ -67,22 +61,14 @@ document.addEventListener("DOMContentLoaded", () => {
 // PARTICLES
 // ─────────────────────────────────────────────
 
-function spawnParticles() {
+function spawnParticles(){
 
   const container =
     document.getElementById("particles");
 
-  if (!container) return;
+  if(!container) return;
 
-  const colors = [
-    "#c084fc",
-    "#818cf8",
-    "#ec4899",
-    "#67e8f9",
-    "#a855f7"
-  ];
-
-  for (let i = 0; i < 25; i++) {
+  for(let i=0;i<25;i++){
 
     const p =
       document.createElement("div");
@@ -90,26 +76,13 @@ function spawnParticles() {
     p.className = "particle";
 
     p.style.left =
-      Math.random() * 100 + "%";
-
-    p.style.width =
-      Math.random() * 3 + 2 + "px";
-
-    p.style.height =
-      p.style.width;
-
-    p.style.background =
-      colors[
-        Math.floor(
-          Math.random() * colors.length
-        )
-      ];
+      Math.random()*100 + "%";
 
     p.style.animationDuration =
-      Math.random() * 15 + 10 + "s";
+      (10 + Math.random()*15) + "s";
 
     p.style.animationDelay =
-      Math.random() * 10 + "s";
+      Math.random()*10 + "s";
 
     container.appendChild(p);
   }
@@ -120,7 +93,7 @@ function spawnParticles() {
 // START CHAT
 // ─────────────────────────────────────────────
 
-function startChat() {
+function startChat(){
 
   const input =
     document.getElementById("user-name-input");
@@ -128,14 +101,9 @@ function startChat() {
   const name =
     input.value.trim();
 
-  if (!name) {
+  if(!name){
 
-    input.style.borderColor = "#ec4899";
-
-    input.placeholder =
-      "Please enter your name 💜";
-
-    input.focus();
+    alert("Please enter your name 💜");
 
     return;
   }
@@ -148,28 +116,27 @@ function startChat() {
     userName.charAt(0).toUpperCase();
 
   // Hide onboarding
-  const onboarding =
-    document.getElementById("screen-onboarding");
-
-  onboarding.style.display = "none";
+  document.getElementById(
+    "screen-onboarding"
+  ).style.display = "none";
 
   // Show chat screen
   const chat =
-    document.getElementById("screen-chat");
+    document.getElementById(
+      "screen-chat"
+    );
 
   chat.style.display = "flex";
 
-  chat.style.flexDirection = "column";
+  chat.style.flexDirection =
+    "column";
 
-  // Welcome banner
-  showWelcomeBanner();
-
-  // First bot message
+  // Welcome
   appendBotMessage(
     `Hey ${userName}! 💜 I'm Sakha-Sakhi — your companion always. How are you feeling today?`,
     "😊",
     "Calm",
-    "joy"
+    "neutral"
   );
 
   updateMoodBadge(
@@ -179,45 +146,11 @@ function startChat() {
 
   setTimeout(() => {
 
-    const msgInput =
-      document.getElementById("msg-input");
-
-    if(msgInput){
-      msgInput.focus();
-    }
+    document
+      .getElementById("msg-input")
+      .focus();
 
   }, 300);
-}
-
-
-// ─────────────────────────────────────────────
-// WELCOME BANNER
-// ─────────────────────────────────────────────
-
-function showWelcomeBanner() {
-
-  const chatWindow =
-    document.getElementById("chat-window");
-
-  const banner =
-    document.createElement("div");
-
-  banner.className =
-    "welcome-banner";
-
-  banner.innerHTML = `
-    <div class="emoji">💜</div>
-
-    <p>
-      This is the beginning of your conversation with
-      <strong>Sakha-Sakhi</strong>.<br>
-
-      She's here to listen,
-      uplift, and support you always.
-    </p>
-  `;
-
-  chatWindow.appendChild(banner);
 }
 
 
@@ -225,9 +158,9 @@ function showWelcomeBanner() {
 // SEND MESSAGE
 // ─────────────────────────────────────────────
 
-async function sendMessage() {
+async function sendMessage(){
 
-  if (isWaiting) return;
+  if(isWaiting) return;
 
   const input =
     document.getElementById("msg-input");
@@ -235,7 +168,7 @@ async function sendMessage() {
   const message =
     input.value.trim();
 
-  if (!message) return;
+  if(!message) return;
 
   appendUserMessage(message);
 
@@ -257,88 +190,13 @@ async function sendMessage() {
   const typingId =
     showTypingIndicator();
 
-  // Mood detection
+  // Detect emotion
+  const mood =
+    detectEmotion(message);
 
-  let moodEmoji = "😊";
-  let moodLabel = "Calm";
-  let emotion = "neutral";
-
-  const lower =
-    message.toLowerCase();
-
-  if (
-    lower.includes("happy") ||
-    lower.includes("excited")
-  ) {
-
-    moodEmoji = "😄";
-    moodLabel = "Joyful";
-    emotion = "joy";
-  }
-
-  else if (
-    lower.includes("sad") ||
-    lower.includes("cry")
-  ) {
-
-    moodEmoji = "💙";
-    moodLabel = "Feeling Low";
-    emotion = "sadness";
-  }
-
-  else if (
-    lower.includes("angry") ||
-    lower.includes("mad")
-  ) {
-
-    moodEmoji = "🔥";
-    moodLabel = "Frustrated";
-    emotion = "anger";
-  }
-
-  else if (
-    lower.includes("tired")
-  ) {
-
-    moodEmoji = "🌙";
-    moodLabel = "Exhausted";
-    emotion = "tired";
-  }
-
-  // Smart replies
-
-  const replies = [
-
-    "I'm listening 💜 Tell me more.",
-
-    "You matter, and your feelings matter too 🌸",
-
-    "I'm here for you 🌈",
-
-    "Everything will be okay 💕",
-
-    "You're stronger than you think 💜",
-
-    "Take a deep breath 🌙",
-
-    "Thank you for sharing that 🤗",
-
-    "I understand how you feel 💙",
-
-    "You're not alone 🌟",
-
-    "Your feelings are valid 💜"
-  ];
-
+  // Generate smart reply
   const reply =
-    replies[
-      Math.floor(
-        Math.random() *
-        replies.length
-      )
-    ];
-
-  // Fake typing delay
+    generateReply(message, mood.emotion);
 
   setTimeout(() => {
 
@@ -348,14 +206,14 @@ async function sendMessage() {
 
     appendBotMessage(
       reply,
-      moodEmoji,
-      moodLabel,
-      emotion
+      mood.emoji,
+      mood.label,
+      mood.emotion
     );
 
     updateMoodBadge(
-      moodEmoji,
-      moodLabel
+      mood.emoji,
+      mood.label
     );
 
     updateHeaderStatus(
@@ -365,15 +223,162 @@ async function sendMessage() {
 
     isWaiting = false;
 
-    document.getElementById(
-      "btn-send"
-    ).disabled = false;
-
-    document.getElementById(
-      "msg-input"
-    ).focus();
+    document
+      .getElementById("btn-send")
+      .disabled = false;
 
   }, 1200);
+}
+
+
+// ─────────────────────────────────────────────
+// EMOTION DETECTION
+// ─────────────────────────────────────────────
+
+function detectEmotion(message){
+
+  const text =
+    message.toLowerCase();
+
+  if(
+    text.includes("happy") ||
+    text.includes("excited") ||
+    text.includes("great")
+  ){
+    return {
+      emotion:"joy",
+      emoji:"😄",
+      label:"Joyful"
+    };
+  }
+
+  if(
+    text.includes("sad") ||
+    text.includes("cry") ||
+    text.includes("broken")
+  ){
+    return {
+      emotion:"sadness",
+      emoji:"💙",
+      label:"Feeling Low"
+    };
+  }
+
+  if(
+    text.includes("angry") ||
+    text.includes("mad") ||
+    text.includes("hate")
+  ){
+    return {
+      emotion:"anger",
+      emoji:"🔥",
+      label:"Frustrated"
+    };
+  }
+
+  if(
+    text.includes("tired") ||
+    text.includes("exhausted")
+  ){
+    return {
+      emotion:"tired",
+      emoji:"🌙",
+      label:"Exhausted"
+    };
+  }
+
+  if(
+    text.includes("alone") ||
+    text.includes("lonely")
+  ){
+    return {
+      emotion:"lonely",
+      emoji:"💜",
+      label:"Lonely"
+    };
+  }
+
+  return {
+    emotion:"neutral",
+    emoji:"😊",
+    label:"Calm"
+  };
+}
+
+
+// ─────────────────────────────────────────────
+// SMART REPLY ENGINE
+// ─────────────────────────────────────────────
+
+function generateReply(message, emotion){
+
+  const replies = {
+
+    joy: [
+
+      `That's amazing ${userName}! 🌟 I'm genuinely happy for you!`,
+
+      `Yesss ${userName}! 🎉 You deserve this happiness.`,
+
+      `That sounds wonderful 💜 Keep shining!`
+    ],
+
+    sadness: [
+
+      `${userName}, I'm here with you 💙 You don't have to carry this alone.`,
+
+      `It's okay to feel this way 🌙 Your feelings matter.`,
+
+      `Even dark nights pass, ${userName}. 🌸`
+    ],
+
+    anger: [
+
+      `That sounds really frustrating 🔥 Your feelings are valid.`,
+
+      `Take a deep breath 💜 We'll get through this together.`,
+
+      `I understand why you'd feel angry 🌋`
+    ],
+
+    lonely: [
+
+      `You're not alone right now 💜 I'm here.`,
+
+      `Talking to me already took courage 🌟`,
+
+      `I hear you, ${userName}.`
+    ],
+
+    tired: [
+
+      `Rest is important 🌙 You've been carrying a lot.`,
+
+      `Take things one step at a time 💜`,
+
+      `You're doing better than you think 🌸`
+    ],
+
+    neutral: [
+
+      `Tell me more 😊 I'm listening.`,
+
+      `That's interesting 🌟`,
+
+      `I'm here for you 💜`
+    ]
+  };
+
+  const pool =
+    replies[emotion] ||
+    replies["neutral"];
+
+  return pool[
+    Math.floor(
+      Math.random() *
+      pool.length
+    )
+  ];
 }
 
 
@@ -386,10 +391,12 @@ function appendBotMessage(
   moodEmoji,
   moodLabel,
   emotion
-) {
+){
 
   const chatWindow =
-    document.getElementById("chat-window");
+    document.getElementById(
+      "chat-window"
+    );
 
   const row =
     document.createElement("div");
@@ -405,27 +412,19 @@ function appendBotMessage(
 
       <div class="msg-bubble bot-bubble">
 
-        ${formatText(text)}
+        ${text}
 
       </div>
 
-      <div style="display:flex;align-items:center;gap:8px;">
+      <div style="display:flex;gap:8px;align-items:center;">
 
         <span class="msg-time">
           ${getTime()}
         </span>
 
-        ${
-          emotion !== "neutral"
-
-          ? `
-            <span class="msg-emotion-tag">
-              ${moodEmoji} ${moodLabel}
-            </span>
-          `
-
-          : ""
-        }
+        <span class="msg-emotion-tag">
+          ${moodEmoji} ${moodLabel}
+        </span>
 
       </div>
 
@@ -442,10 +441,12 @@ function appendBotMessage(
 // USER MESSAGE
 // ─────────────────────────────────────────────
 
-function appendUserMessage(text) {
+function appendUserMessage(text){
 
   const chatWindow =
-    document.getElementById("chat-window");
+    document.getElementById(
+      "chat-window"
+    );
 
   const row =
     document.createElement("div");
@@ -462,7 +463,7 @@ function appendUserMessage(text) {
     <div class="msg-bubble-wrap">
 
       <div class="msg-bubble user-bubble">
-        ${escapeHtml(text)}
+        ${text}
       </div>
 
       <span class="msg-time">
@@ -479,26 +480,28 @@ function appendUserMessage(text) {
 
 
 // ─────────────────────────────────────────────
-// TYPING INDICATOR
+// TYPING
 // ─────────────────────────────────────────────
 
-function showTypingIndicator() {
+function showTypingIndicator(){
 
   const chatWindow =
-    document.getElementById("chat-window");
-
-  const indicator =
-    document.createElement("div");
+    document.getElementById(
+      "chat-window"
+    );
 
   const id =
     "typing-" + Date.now();
 
-  indicator.id = id;
+  const div =
+    document.createElement("div");
 
-  indicator.className =
+  div.id = id;
+
+  div.className =
     "typing-indicator";
 
-  indicator.innerHTML = `
+  div.innerHTML = `
 
     <div class="msg-avatar">🌟</div>
 
@@ -513,33 +516,32 @@ function showTypingIndicator() {
     </div>
   `;
 
-  chatWindow.appendChild(indicator);
+  chatWindow.appendChild(div);
 
   scrollToBottom();
 
   return id;
 }
 
-function removeTypingIndicator(id) {
+function removeTypingIndicator(id){
 
   const el =
     document.getElementById(id);
 
-  if (el) {
-
+  if(el){
     el.remove();
   }
 }
 
 
 // ─────────────────────────────────────────────
-// UI HELPERS
+// HELPERS
 // ─────────────────────────────────────────────
 
 function updateMoodBadge(
   emoji,
   label
-) {
+){
 
   document.getElementById(
     "mood-emoji"
@@ -553,7 +555,7 @@ function updateMoodBadge(
 function updateHeaderStatus(
   text,
   color
-) {
+){
 
   const status =
     document.getElementById(
@@ -565,50 +567,31 @@ function updateHeaderStatus(
   status.style.color = color;
 }
 
-function scrollToBottom() {
+function scrollToBottom(){
 
   const chatWindow =
-    document.getElementById("chat-window");
+    document.getElementById(
+      "chat-window"
+    );
 
   chatWindow.scrollTop =
     chatWindow.scrollHeight;
 }
 
-function autoResize(textarea) {
-
-  textarea.style.height = "auto";
+function autoResize(textarea){
 
   textarea.style.height =
-    Math.min(
-      textarea.scrollHeight,
-      140
-    ) + "px";
+    "auto";
+
+  textarea.style.height =
+    textarea.scrollHeight + "px";
 }
 
-function getTime() {
+function getTime(){
 
   return new Date()
     .toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit"
+      hour:"2-digit",
+      minute:"2-digit"
     });
-}
-
-function escapeHtml(text) {
-
-  return text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
-}
-
-function formatText(text) {
-
-  let safe =
-    escapeHtml(text);
-
-  safe =
-    safe.replace(/\n/g, "<br>");
-
-  return safe;
 }
