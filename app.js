@@ -58,7 +58,7 @@ function startChat() {
       !chatScreen
     ) {
 
-      alert("Screen error");
+      alert("Screen elements not found");
       return;
     }
 
@@ -85,8 +85,9 @@ function startChat() {
       "Calm"
     );
 
-    // FOCUS INPUT
-    setTimeout(() => {
+    // FOCUS INPUT - RETRY LOGIC
+    let attempts = 0;
+    const focusInterval = setInterval(() => {
 
       const msgInput =
         document.getElementById(
@@ -96,13 +97,23 @@ function startChat() {
       if (msgInput) {
 
         msgInput.focus();
+        clearInterval(focusInterval);
+        
+        // Attach event listener after input is focused
+        attachMessageListeners();
       }
 
-    }, 200);
+      attempts++;
+      if (attempts > 10) {
+        clearInterval(focusInterval);
+        console.warn("msg-input not found after retries");
+      }
+
+    }, 100);
 
   } catch (error) {
 
-    console.log(error);
+    console.error("Start Error:", error);
 
     alert(
       "Start Error: " +
@@ -244,7 +255,10 @@ function sendMessage() {
         "msg-input"
       );
 
-    if (!input) return;
+    if (!input) {
+      console.error("msg-input not found");
+      return;
+    }
 
     const text =
       input.value.trim();
@@ -405,7 +419,7 @@ function sendMessage() {
 
   } catch (error) {
 
-    console.log(error);
+    console.error("Send Error:", error);
 
     alert(
       "Send Error: " +
@@ -480,35 +494,75 @@ function getTime() {
 }
 
 // ======================================
-// ENTER KEY SUPPORT
+// ATTACH MESSAGE LISTENERS
+// ======================================
+
+function attachMessageListeners() {
+
+  const input =
+    document.getElementById(
+      "msg-input"
+    );
+
+  if (input) {
+
+    // Remove existing listeners to avoid duplicates
+    input.removeEventListener("keydown", handleKeyDown);
+    
+    // Add new listener
+    input.addEventListener(
+      "keydown",
+      handleKeyDown
+    );
+  }
+}
+
+// ======================================
+// KEY DOWN HANDLER
+// ======================================
+
+function handleKeyDown(e) {
+
+  if (
+    e.key === "Enter" &&
+    !e.shiftKey
+  ) {
+
+    e.preventDefault();
+    sendMessage();
+  }
+}
+
+// ======================================
+// INITIALIZATION
 // ======================================
 
 document.addEventListener(
   "DOMContentLoaded",
   function () {
 
-    const input =
+    // Attach listeners to initial username input
+    const userNameInput =
       document.getElementById(
-        "msg-input"
+        "user-name-input"
       );
 
-    if (input) {
+    if (userNameInput) {
 
-      input.addEventListener(
+      userNameInput.addEventListener(
         "keydown",
         function (e) {
 
-          if (
-            e.key === "Enter" &&
-            !e.shiftKey
-          ) {
+          if (e.key === "Enter") {
 
             e.preventDefault();
-
-            sendMessage();
+            startChat();
           }
         }
       );
     }
+
+    // Try to attach message listeners if they exist
+    attachMessageListeners();
   }
 );
