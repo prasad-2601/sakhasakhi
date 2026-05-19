@@ -3,8 +3,12 @@ function generateReply(message, emotion){
   const text =
     message.toLowerCase().trim();
 
+  // ─────────────────────────
   // GREETINGS
+  // ─────────────────────────
+
   const greetings = [
+
     "hi",
     "hello",
     "hey",
@@ -16,12 +20,8 @@ function generateReply(message, emotion){
     "good evening"
   ];
 
-  // Greeting detection
-  if(
-    greetings.some(
-      greet => text.includes(greet)
-    )
-  ){
+  // STRICT GREETING CHECK
+  if(greetings.includes(text)){
 
     const greetingReplies = [
 
@@ -47,7 +47,10 @@ function generateReply(message, emotion){
     ];
   }
 
-  // MOTIVATIONAL
+  // ─────────────────────────
+  // MOTIVATIONAL LINES
+  // ─────────────────────────
+
   const motivational = [
 
     "🌸 One difficult day doesn't define your life.",
@@ -60,10 +63,15 @@ function generateReply(message, emotion){
 
     "🌙 You're stronger than you think.",
 
-    "🔥 Tough moments create stronger people."
+    "🔥 Tough moments create stronger people.",
+
+    "💙 It's okay to rest sometimes."
   ];
 
-  // EMOTIONAL RESPONSES
+  // ─────────────────────────
+  // MAIN RESPONSES
+  // ─────────────────────────
+
   const responses = {
 
     joy: [
@@ -72,7 +80,9 @@ function generateReply(message, emotion){
 
       `I'm genuinely happy hearing that 💜`,
 
-      `You sound really excited 🌟`
+      `You sound really excited 🌟`,
+
+      `That's beautiful to hear honestly ✨`
     ],
 
     sadness: [
@@ -81,7 +91,9 @@ function generateReply(message, emotion){
 
       `You don't always have to pretend you're okay 🌙`,
 
-      `I'm glad you shared this instead of hiding it 💜`
+      `I'm glad you shared this instead of hiding it 💜`,
+
+      `That sounds emotionally heavy honestly.`
     ],
 
     anger: [
@@ -90,7 +102,9 @@ function generateReply(message, emotion){
 
       `Your feelings are valid 💜`,
 
-      `I understand why you're upset.`
+      `I understand why you're upset.`,
+
+      `Sometimes life feels unfair honestly.`
     ],
 
     fear: [
@@ -99,7 +113,9 @@ function generateReply(message, emotion){
 
       `Take things one step at a time 🌿`,
 
-      `You don't need all the answers today.`
+      `You don't need all the answers today.`,
+
+      `Anxiety can make everything feel heavier.`
     ],
 
     lonely: [
@@ -108,7 +124,9 @@ function generateReply(message, emotion){
 
       `I'm here with you right now 🌸`,
 
-      `Your existence matters more than you know.`
+      `Your existence matters more than you know.`,
+
+      `You deserve people who understand you 💙`
     ],
 
     neutral: [
@@ -117,7 +135,9 @@ function generateReply(message, emotion){
 
       `I'm listening carefully 💜`,
 
-      `That sounds important to you 🌸`
+      `That sounds important to you 🌸`,
+
+      `Go on... I'm listening ✨`
     ]
   };
 
@@ -125,40 +145,85 @@ function generateReply(message, emotion){
     responses[emotion] ||
     responses["neutral"];
 
-  // EXAMS
+  // ─────────────────────────
+  // CONTEXT-AWARE REPLIES
+  // ─────────────────────────
+
+  // Exams
   if(
     text.includes("exam") ||
-    text.includes("study")
+    text.includes("study") ||
+    text.includes("marks")
   ){
 
     pool.push(
       `Academic pressure can become exhausting 📚`,
-      `Please don't let marks define your worth 💜`
+      `Please don't let marks define your worth 💜`,
+      `You're more important than grades 🌸`
     );
   }
 
-  // RELATIONSHIP
+  // Relationship
   if(
     text.includes("breakup") ||
-    text.includes("relationship")
+    text.includes("relationship") ||
+    text.includes("love")
   ){
 
     pool.push(
       `Heartbreak changes people deeply 💔`,
-      `Emotional pain takes time to heal 🌙`
+      `Emotional pain takes time to heal 🌙`,
+      `Relationships can leave emotional scars.`
     );
   }
 
-  // FAMILY
+  // Family
   if(text.includes("family")){
 
     pool.push(
-      `Family pressure can become emotionally heavy.`,
-      `You deserve understanding too 💙`
+      `Family pressure can become emotionally heavy 💙`,
+      `You deserve understanding too 🌸`,
+      `Sometimes family situations become overwhelming.`
     );
   }
 
+  // Friends
+  if(text.includes("friend")){
+
+    pool.push(
+      `Friendship problems can hurt deeply 💜`,
+      `Being misunderstood by friends feels painful.`,
+      `Real friendships should feel safe 🌸`
+    );
+  }
+
+  // Alone
+  if(text.includes("alone")){
+
+    pool.push(
+      `You don't deserve to feel alone 💜`,
+      `Loneliness can make everything feel heavier.`,
+      `I'm glad you're talking instead of staying silent 🌸`
+    );
+  }
+
+  // Tired
+  if(
+    text.includes("tired") ||
+    text.includes("exhausted")
+  ){
+
+    pool.push(
+      `You sound emotionally drained 🌙`,
+      `You've probably been carrying too much.`,
+      `Rest is important too 💜`
+    );
+  }
+
+  // ─────────────────────────
   // RANDOM RESPONSE
+  // ─────────────────────────
+
   const response =
     pool[
       Math.floor(
@@ -183,7 +248,10 @@ function generateReply(message, emotion){
       ];
   }
 
-  // FOLLOW UPS
+  // ─────────────────────────
+  // FOLLOW-UP QUESTIONS
+  // ─────────────────────────
+
   const followUps = [
 
     "Do you want to talk more about it?",
@@ -194,7 +262,9 @@ function generateReply(message, emotion){
 
     "Tell me more honestly.",
 
-    "What happened exactly?"
+    "What happened exactly?",
+
+    "How long have you been feeling this way?"
   ];
 
   if(Math.random() > 0.5){
