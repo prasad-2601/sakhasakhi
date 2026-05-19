@@ -1,245 +1,238 @@
+// ─────────────────────────────────────────────
+// ADVANCED EMOTION DETECTION
+// ─────────────────────────────────────────────
+
+function detectEmotion(message){
+
+  const text = message.toLowerCase();
+
+  const emotions = {
+
+    joy: [
+      "happy","excited","great","awesome","amazing",
+      "good","love","success","won","proud",
+      "fantastic","best","joy","celebrate"
+    ],
+
+    sadness: [
+      "sad","cry","broken","hurt","depressed",
+      "pain","upset","heartbroken","alone",
+      "miss","tears","unhappy","lost"
+    ],
+
+    anger: [
+      "angry","mad","hate","frustrated",
+      "annoyed","furious","irritated",
+      "rage","pissed"
+    ],
+
+    fear: [
+      "fear","scared","anxiety","worried",
+      "stress","nervous","panic","afraid",
+      "overthinking"
+    ],
+
+    tired: [
+      "tired","exhausted","drained",
+      "burnout","sleepy","weak"
+    ],
+
+    lonely: [
+      "alone","lonely","nobody",
+      "isolated","ignored","left out"
+    ]
+  };
+
+  let detected = "neutral";
+
+  for(const emotion in emotions){
+
+    for(const word of emotions[emotion]){
+
+      if(text.includes(word)){
+
+        detected = emotion;
+
+        break;
+      }
+    }
+  }
+
+  const moodData = {
+
+    joy: {
+      emoji:"😄",
+      label:"Joyful"
+    },
+
+    sadness: {
+      emoji:"💙",
+      label:"Feeling Low"
+    },
+
+    anger: {
+      emoji:"🔥",
+      label:"Frustrated"
+    },
+
+    fear: {
+      emoji:"💚",
+      label:"Anxious"
+    },
+
+    tired: {
+      emoji:"🌙",
+      label:"Exhausted"
+    },
+
+    lonely: {
+      emoji:"💜",
+      label:"Lonely"
+    },
+
+    neutral: {
+      emoji:"😊",
+      label:"Calm"
+    }
+  };
+
+  return {
+    emotion: detected,
+    emoji: moodData[detected].emoji,
+    label: moodData[detected].label
+  };
+}
+
+
+// ─────────────────────────────────────────────
+// ADVANCED AI REPLY ENGINE
+// ─────────────────────────────────────────────
+
 function generateReply(message, emotion){
 
-  const text =
-    message.toLowerCase();
+  const motivationalQuotes = [
 
-  // Random motivational lines
-  const motivational = [
+    "🌟 Tough times never last, but strong people do.",
 
-    "🌸 One difficult moment doesn't define your whole life.",
+    "💜 Healing takes time, and that's okay.",
 
-    "💜 You deserve kindness — especially from yourself.",
+    "🌈 Every storm eventually runs out of rain.",
 
-    "🌈 Better days slowly come back.",
+    "🔥 Your current situation is not your final destination.",
 
-    "✨ Healing isn't linear, and that's okay.",
+    "🌸 You are stronger than you think.",
 
-    "🌙 You're doing better than you think.",
+    "✨ Small steps still move you forward.",
 
-    "🔥 Hard times often create strong people.",
+    "💙 It's okay to rest. It's not okay to give up.",
 
-    "💙 It's okay to take things slowly."
+    "🌙 Even the darkest night ends with sunrise."
   ];
 
-  // Human-style conversation replies
-  const responses = {
+  const replies = {
 
     joy: [
 
-      `Awww that's honestly so nice to hear 😄`,
+      `That's amazing ${userName}! 😄 I'm genuinely so happy for you!`,
 
-      `That sounds really exciting ${userName}!`,
+      `Yesss ${userName}! 🎉 You deserve every bit of this happiness.`,
 
-      `I'm genuinely happy for you 💜`,
+      `Wowww that's incredible 🌟 Keep shining and smiling!`,
 
-      `You sound really happy right now and I love that 🌟`,
-
-      `That's such a beautiful feeling honestly ✨`,
-
-      `Looks like something good finally happened 😄`
+      `That made me smile too 💜 Your happiness matters.`
     ],
 
     sadness: [
 
-      `I'm really sorry you're feeling like this 💙`,
+      `${userName}, I'm really sorry you're feeling this way 💙 But remember — you are not alone.`,
 
-      `That sounds emotionally exhausting honestly.`,
+      `It's okay to cry sometimes 🌙 Strong people feel deeply too.`,
 
-      `You don't always have to pretend you're okay 🌙`,
+      `Even dark nights pass eventually 🌸 Better days are coming.`,
 
-      `I know things probably feel heavy right now.`,
+      `You matter so much more than your sadness tells you 💜`,
 
-      `Sometimes life becomes overwhelming and that's valid.`,
-
-      `I'm glad you shared this instead of keeping it inside 💜`,
-
-      `That must have hurt a lot honestly.`,
-
-      `I wish I could give you a hug right now 🌸`
+      `${userName}, pain is temporary. Please don't lose hope 🌈`
     ],
 
     anger: [
 
-      `That would frustrate anyone honestly 🔥`,
+      `That sounds genuinely frustrating 🔥 Your feelings are valid.`,
 
-      `Yeah... I understand why you're upset.`,
+      `Take a deep breath 💜 You don't have to carry all this anger alone.`,
 
-      `Sometimes people really hurt us deeply.`,
+      `I understand why you're upset 🌋 Sometimes life feels unfair.`,
 
-      `That situation sounds unfair to you.`,
-
-      `You don't need to suppress your feelings 💜`,
-
-      `Anger usually comes from pain underneath.`
+      `Anger usually comes from hurt 💙 Be gentle with yourself.`
     ],
 
     fear: [
 
-      `That sounds stressful honestly 💚`,
+      `It's okay to feel anxious sometimes 💚 You're human.`,
 
-      `I know anxiety can make everything feel heavier.`,
+      `You are stronger than your fears 🌟`,
 
-      `You're carrying a lot mentally right now.`,
+      `Take one step at a time 🌿 You don't need all the answers today.`,
 
-      `It's okay to feel scared sometimes.`,
-
-      `Take one thing at a time 🌿`,
-
-      `Your mind probably feels very overwhelmed right now.`
-    ],
-
-    lonely: [
-
-      `Feeling lonely hurts more than people realize 💜`,
-
-      `I'm here with you right now.`,
-
-      `You deserve people who truly understand you.`,
-
-      `I know that empty feeling can be painful.`,
-
-      `You're not invisible 🌸`,
-
-      `Even when it feels lonely, your presence matters.`
+      `Breathe slowly 💜 You will get through this.`
     ],
 
     tired: [
 
-      `You sound emotionally drained 🌙`,
+      `Rest is important 🌙 You've been carrying a lot emotionally.`,
 
-      `You've probably been carrying too much alone.`,
+      `It's okay to pause and breathe 💜`,
 
-      `Rest is important too 💜`,
+      `You don't need to solve everything today 🌸`,
 
-      `It's okay to slow down sometimes.`,
+      `${userName}, exhaustion doesn't mean weakness.`
+    ],
 
-      `You don't have to solve everything today.`,
+    lonely: [
 
-      `Your mind and heart both seem tired.`
+      `You're not alone right now 💜 I'm here with you.`,
+
+      `Talking about your feelings already took courage 🌟`,
+
+      `I hear you ${userName}, and your feelings matter 💙`,
+
+      `Even when it feels lonely, your existence matters 🌸`
     ],
 
     neutral: [
 
-      `Hmm... tell me more about that 😊`,
+      `Tell me more 😊 I'm listening carefully.`,
 
-      `That sounds interesting honestly.`,
+      `How did that make you feel? 💜`,
 
-      `And how did that make you feel? 💜`,
+      `That's interesting 🌟 I want to understand better.`,
 
-      `I'm listening 🌸`,
-
-      `I understand what you're saying.`,
-
-      `Go on... I'm here.`
+      `I'm here with you 🌸`
     ]
   };
 
-  // Select emotion responses
-  let pool =
-    responses[emotion] ||
-    responses["neutral"];
+  const emotionReplies =
+    replies[emotion] || replies["neutral"];
 
-  // Dynamic contextual additions
-  if(text.includes("exam") || text.includes("study")){
-
-    pool.push(
-      `Exams can seriously drain people mentally 📚`,
-      `Don't let marks decide your worth 💜`,
-      `Academic pressure can become really overwhelming.`
-    );
-  }
-
-  if(text.includes("breakup") || text.includes("love")){
-
-    pool.push(
-      `Heartbreak changes people deeply 💔`,
-      `Losing someone emotionally is never easy.`,
-      `Relationships can leave deep emotional scars.`
-    );
-  }
-
-  if(text.includes("friend")){
-
-    pool.push(
-      `Friendship problems hurt a lot honestly.`,
-      `Being misunderstood by friends feels terrible.`,
-      `Real friendships should feel safe 💜`
-    );
-  }
-
-  if(text.includes("family")){
-
-    pool.push(
-      `Family pressure can become emotionally exhausting.`,
-      `Sometimes family situations are complicated.`,
-      `You deserve understanding too 💙`
-    );
-  }
-
-  if(text.includes("alone")){
-
-    pool.push(
-      `You don't deserve to feel alone.`,
-      `Loneliness can make everything feel heavier.`,
-      `I'm really glad you're talking instead of isolating yourself.`
-    );
-  }
-
-  // Select random response
-  const response =
-    pool[
+  const randomReply =
+    emotionReplies[
       Math.floor(
         Math.random() *
-        pool.length
+        emotionReplies.length
       )
     ];
 
-  // Add motivation randomly
-  const addMotivation =
-    Math.random() > 0.4;
+  const randomQuote =
+    motivationalQuotes[
+      Math.floor(
+        Math.random() *
+        motivationalQuotes.length
+      )
+    ];
 
-  let finalReply = response;
+  return `
+${randomReply}
 
-  if(addMotivation){
-
-    const quote =
-      motivational[
-        Math.floor(
-          Math.random() *
-          motivational.length
-        )
-      ];
-
-    finalReply += `\n\n${quote}`;
-  }
-
-  // Add natural follow-up randomly
-  const followUps = [
-
-    "Do you want to talk more about it?",
-
-    "How long have you been feeling this way?",
-
-    "What happened exactly?",
-
-    "Has this been bothering you for a while?",
-
-    "I'm listening 💜",
-
-    "Tell me more honestly."
-  ];
-
-  if(Math.random() > 0.5){
-
-    finalReply += `\n\n${
-      followUps[
-        Math.floor(
-          Math.random() *
-          followUps.length
-        )
-      ]
-    }`;
-  }
-
-  return finalReply;
+${randomQuote}
+  `;
 }
