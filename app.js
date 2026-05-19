@@ -107,3 +107,141 @@ function startChat(){
     );
   }
 }
+// ─────────────────────────────
+// APPEND BOT MESSAGE
+// ─────────────────────────────
+
+function appendBotMessage(
+  text,
+  moodEmoji,
+  moodLabel
+){
+
+  const chatWindow =
+    document.getElementById(
+      "chat-window"
+    );
+
+  if(!chatWindow) return;
+
+  const row =
+    document.createElement("div");
+
+  row.className =
+    "msg-row bot-row";
+
+  row.innerHTML = `
+
+    <div class="msg-avatar">
+      🌸
+    </div>
+
+    <div class="msg-bubble-wrap">
+
+      <div class="msg-bubble bot-bubble">
+
+        ${text}
+
+      </div>
+
+      <div
+        style="
+          display:flex;
+          gap:8px;
+          align-items:center;
+          margin-top:4px;
+        "
+      >
+
+        <span class="msg-time">
+          ${getTime()}
+        </span>
+
+        <span class="msg-emotion-tag">
+
+          ${moodEmoji}
+          ${moodLabel}
+
+        </span>
+
+      </div>
+
+    </div>
+  `;
+
+  chatWindow.appendChild(row);
+
+  scrollToBottom();
+}
+
+
+// ─────────────────────────────
+// APPEND USER MESSAGE
+// ─────────────────────────────
+
+function appendUserMessage(text){
+
+  const chatWindow =
+    document.getElementById(
+      "chat-window"
+    );
+
+  if(!chatWindow) return;
+
+  const row =
+    document.createElement("div");
+
+  row.className =
+    "msg-row user-row";
+
+  row.innerHTML = `
+
+    <div class="msg-avatar user-avatar">
+
+      ${userInitial}
+
+    </div>
+
+    <div class="msg-bubble-wrap">
+
+      <div class="msg-bubble user-bubble">
+
+        ${text}
+
+      </div>
+
+      <span class="msg-time">
+
+        ${getTime()}
+
+      </span>
+
+    </div>
+  `;
+
+  chatWindow.appendChild(row);
+
+  scrollToBottom();
+}
+function scrollToBottom(){
+
+  const chatWindow =
+    document.getElementById(
+      "chat-window"
+    );
+
+  if(chatWindow){
+
+    chatWindow.scrollTop =
+      chatWindow.scrollHeight;
+  }
+}
+
+function getTime(){
+
+  return new Date()
+    .toLocaleTimeString([], {
+      hour:"2-digit",
+      minute:"2-digit"
+    });
+}
